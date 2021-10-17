@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Course>
+@Styles.Render("~/admin")
+@Styles.Render("~/table")
+@Styles.Render("~/gridAdmin")
+@{
+    ViewBag.Title = "Администрирование (Курсы)";
+    String search = ViewBag.Search;
+}
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/admin/management/courses">@(ViewBag.Title)</a>
+    @if (!String.IsNullOrEmpty(search)) {
+        @(">")
+        <a class="active-nav basic" href="/admin/management/groups?search=@search">Поиск (@(search))</a>
+    }
+</p>
+<div class="manageContainer" id="ManageContainer">
+    @if (Model.Count() == 0) {
+        <p class="searchNull icon">Ничего не найдено</p>
+    }
+    else {
+        @Html.Partial("Partial/Tables/_TableCourses", Model)
+    }
+</div>
+
+@section rightBox{
+    <div class="card">
+        <div class="card mini">
+            <div class="search">
+                @using (Html.BeginForm("management/courses", "Admin", FormMethod.Get, new { id = "searchForm" })) { }
+                <input form="searchForm" type="search" id="Search" name="search" placeholder="Поиск" />
+                <input form="searchForm" type="button" class="btn iconBox active" value="search" id="SearchButton" />
+            </div>
+        </div>
+        <div class="card mini">
+            <div class="addContainer">
+                <div class="btnBox">
+                    @Html.ActionLink("Добавить курс", "Create", null, new { @class = "btn", id = "Create" })
+                </div>
+                <div class="addBox" id="Add">
+                    <p>Добавление курса</p>
+                    <input type="text" placeholder="Название курса" name="Name" form="formAddCourse" />
+                    <input type="text" placeholder="Аббревиатура курса" name="ShortName" form="formAddCourse" />
+                    <div class="btnBox">
+                        @using (Ajax.BeginForm("AddCourse", null, new AjaxOptions { UpdateTargetId = $"ManageContainer", HttpMethod = "POST" }, new { id = "formAddCourse" })) { }
+                        <input type="submit" form="formAddCourse" value="Добавить курс" class="btn green" />
+                        @Html.ActionLink("Отмена", "Cancel", null, new { @class = "btn", id = "CancelCreate" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Admin/Search")
+    @Scripts.Render("~/js/Admin/Table")
+}

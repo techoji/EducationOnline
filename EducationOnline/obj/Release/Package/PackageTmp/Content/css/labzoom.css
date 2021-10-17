@@ -1,0 +1,28 @@
+﻿.zoomImageBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #4487C5;
+    height: 55vh;
+    background-color: #F0F8FF;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.resultBorder {
+    padding: 20px;
+}
+
+.zoomImageBox .iconBox {
+    font-size: 5rem;
+    color: #4487C5;
+}
+
+.zoomImageBox img {
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    pointer-events: none;
+}

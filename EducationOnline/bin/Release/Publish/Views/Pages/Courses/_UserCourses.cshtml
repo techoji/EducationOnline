@@ -1,0 +1,60 @@
+﻿@model List<CourseVM>
+
+@{
+    List<UserGroupVM> myGroups = ViewBag.UserGroups;
+    //List<DateTime> courseYears = Model.Select(x => x.Year).Distinct().OrderByDescending(x => x.Year).ToList();
+
+    int ColorHue = 0;
+    int donePercent = 0;
+    List<Group> courseGroups = null;
+}
+
+@if (Model.Count > 0) {
+    //foreach (DateTime year in courseYears) {
+    <div class="courseYearBox">
+        @*id="Year@(year.Year)*@
+        @*<h4 class="courseYear">@year.Year/@(year.Year + 1) - @(DateTime.Now.Year == year.Year ? "Текущие" : "Прошлые")</h4>*@
+        <div class="subjects">
+            @foreach (CourseVM course in Model) {
+                using (DbManager db = new DbManager()) {
+                    courseGroups = db.GetGroupsByCourseId(course.Id);
+                    donePercent = db.GetUserCoursePercent(User.Identity.Name, course.Id);
+                    ColorHue = db.GetUserCourse(User.Identity.Name, course.Id).ColorHue;
+                }
+                <a href="/pages/course/@course.Id" @*data-lab="@course.HaveLab"*@ data-colorHue="@ColorHue" data-courseId="@course.Id" class="subject">
+                    @*class="subject@(DateTime.Now > year ? " old" : "" )"*@
+                    <figure>
+                        <div class="imgBox" style="background-color: hsl(@ColorHue, 100%, 98%)">
+                            <img src="~/Content/img/subject.png" alt="@course.Name" />
+                        </div>
+                        <figcaption>
+                            <div class="subName">
+                                @if (String.IsNullOrWhiteSpace(course.ShortName)) {
+                                    <h4 style="color: hsl(@ColorHue, 53%, 52%)" class="course-shortName">@course.Name</h4>
+                                }
+                                else {
+                                    <h4 style="color: hsl(@ColorHue, 53%, 52%)" class="course-shortName">@course.ShortName</h4>
+                                    <p class="course-name noActive icon">@course.Name</p>
+                                }
+                                <div class="course-groups">
+                                    @foreach (Group group in courseGroups) {
+                                        <p class="@(myGroups.Select(x => x.Id).Contains(group.GroupId) ? "active" : "noActive") course-group icon">@group.Name</p>
+                                    }
+                                </div>
+                                @*<p class="noActive course-year icon">@year.Year/@(year.Year + 1)</p>*@
+                                @if (course.GetFiles().Count + course.GetTests().Count > 0) {
+                                    <div class="donePercent" style="border-color: hsl(@ColorHue, 53%, 52%)">
+                                        <span style="width: @(donePercent + "%"); background-color: hsl(@ColorHue, 53%, 52%)" class="percentScale"></span>
+                                    </div>
+                                }
+                            </div>
+                        </figcaption>
+                    </figure>
+                </a>
+            }
+        </div>
+    </div>
+}
+else {
+    <h4>У вас нет курсов.</h4>
+}

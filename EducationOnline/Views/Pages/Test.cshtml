@@ -1,0 +1,161 @@
+﻿@model TestCourseTopicVM
+@Styles.Render("~/courses")
+@Styles.Render("~/test")
+@{
+    ViewBag.Title = "Test";
+
+    TestVM test = ViewBag.Test;
+    CourseVM course = ViewBag.Course;
+    UserTestVM userTest = ViewBag.UserTest;
+
+    TestQuestionVM testQuestion = ViewBag.Question;
+    List<TestAnswerVM> answers = ViewBag.Answers;
+    List<UserTestAnswerVM> userAnswers = ViewBag.UserAnswers;
+
+    List<TestQuestion> questions = ViewBag.Questions;
+    int ColorHue = (ViewBag.UserCourse as UserCourseVM).ColorHue;
+
+    String lightColor = $"hsl({ColorHue}, 100%, 98.5%)";
+    String darkedColor = $"hsl({ColorHue}, 53%, 52%)";
+}
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/account/profile">Личный кабинет</a>
+    >
+    <a class="basic" href="/pages/courses">Мои курсы</a>
+    >
+    <a style="color: @(darkedColor);" class="courseNav" href="/pages/course/@course.Id">@($"{course.Name}" + (String.IsNullOrWhiteSpace(course.ShortName) ? "" : $" ({course.ShortName})"))</a>
+    >
+    <a style="color: @(darkedColor); background-color: @(lightColor)" class="active-nav" href="/pages/test/@test.Id">@(test.Name)</a>
+</p>
+
+<div class="test" data-testId="@test.Id" data-testCourseTopicId="@Model.Id" data-courseId="@course.Id" data-colorHue="@ColorHue">
+    <input id="testTimeResult" type="hidden" value="@ViewBag.TimeMinutes" />
+    <input id="testAttemptsResult" type="hidden" value="@ViewBag.Attempts" />
+    <input id="testQuestionsResult" type="hidden" value="@questions.Count" />
+
+    @if (testQuestion == null) {
+        <div class="testConfirmation">
+            <ul>
+                <li class="icon time" id="">Время теста: <strong id="testTime"></strong> мин.</li>
+                <li class="icon attempts">Количество попыток: <strong id="testAttempts"></strong></li>
+                <li class="icon questions">Количество вопросов: <strong id="testQuestions"></strong></li>
+                <li class="icon testClosing">Тест будет закрыт в <strong>Saturday, 19 December 2020, 23:00</strong></li>
+            </ul>
+
+            @using (Html.BeginForm("TestStart", "Pages", FormMethod.Post)) {
+                <input name="UserId" type="hidden" value="@userTest.UserId" />
+                <input name="TestId" type="hidden" value="@test.Id" />
+                <input name="CourseId" type="hidden" value="@course.Id" />
+                <input name="TestCourseTopicId" type="hidden" value="@Model.Id" />
+                <input name="TestQuestionNumber" type="hidden" value="1" />
+                <input type="submit" class="btn" value="Начать" />
+            }
+        </div>
+        @section rightBox{
+            <div class="card box time">
+                <div class="card mini">
+                    <p class="icon timeIcon">@test.Name - ещё не начался</p>
+                    <ul class="test-options">
+                        <li class="notActive">
+                            <p id="timer">00:00</p>
+                            <span class="lineDate icon timerIcon"></span>
+                        </li>
+                        <li class="notActive">
+                            <p>@questions.Count вопр.</p>
+                            <span class="lineDate icon questionsIcon"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+    else if (userTest.IsStarted) {
+        <div class="testStarted">
+            @{
+                DateTime testTimeEnd = userTest.ClosingIn;
+                String testTimeEndString = $"{testTimeEnd.Year}-{GetTimeNumber(testTimeEnd.Month)}-{GetTimeNumber(testTimeEnd.Day)}T{GetTimeNumber(testTimeEnd.Hour)}:{GetTimeNumber(testTimeEnd.Minute)}:{GetTimeNumber(testTimeEnd.Second)}";
+            }
+            <input id="testClosingInResult" type="hidden" value="@testTimeEndString" />
+
+            <div class="questionBox" data-testQuestionId="@testQuestion.Id">
+                <h1>@(testQuestion.TestQuestionNumber). @testQuestion.Question</h1>
+
+                <ul class="answers">
+                    @foreach (TestAnswerVM answer in answers) {
+                        <li>
+                            <label>
+                                <input @(userAnswers.Any(x => x.TestAnswerId == answer.Id && x.TestQuestionId == testQuestion.Id) ? "checked" : "") value="@answer.Id" name="test@(answer.TestId)" type="@(testQuestion.IsMultiplyAnswer ? "checkbox" : "radio")" />
+                                @answer.Answer
+                            </label>
+                        </li>
+                    }
+                </ul>
+            </div>
+            <div class="testNavigation">
+                <div>
+                    @if (testQuestion.TestQuestionNumber > 1) {
+                        using (Html.BeginForm("test", "pages", new { id = test.Id }, FormMethod.Get, null)) {
+                            <input name="question" type="hidden" value="@(testQuestion.TestQuestionNumber - 1)" />
+                            <input type="submit" class="btn" value="Предыдущий" />
+                        }
+                    }
+                </div>
+                <div>
+                    @if (questions.Count >= testQuestion.TestQuestionNumber + 1) {
+                        using (Html.BeginForm("test", "pages", new { id = test.Id }, FormMethod.Get, null)) {
+                            <input name="question" type="hidden" value="@(testQuestion.TestQuestionNumber + 1)" />
+                            <input type="submit" class="btn" value="Следующий" />
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        @section rightBox{
+            <div class="card box time">
+                <div class="card mini">
+                    <p class="icon timeIcon">@test.Name - начался</p>
+                    <ul class="test-options">
+                        <li class="notActive">
+                            <p id="timer">00:00</p>
+                            <span class="lineDate icon timerIcon"></span>
+                        </li>
+                        <li class="notActive">
+                            <div class="testQuestionPreview">
+                                @foreach (TestQuestion question in questions) {
+                                    <div class="questionPreview">
+                                        @{
+                                            String activeClass = question.TestQuestionNumber == testQuestion.TestQuestionNumber ? " questionActive" : "";
+                                        }
+                                        <a class="testQuestionNavigation@(userAnswers.Any(u => u.TestQuestionId == question.TestQuestionId) ? $" questionDone {activeClass}" : activeClass)" href="/pages/test/@test.Id?question=@question.TestQuestionNumber">@question.TestQuestionNumber</a>
+                                    </div>
+                                }
+                            </div>
+                            <span class="lineDate icon questionsIcon"></span>
+                        </li>
+                        <li class="notActive notHover">
+                            @using (Html.BeginForm("TestStop", "pages", FormMethod.Post)) {
+                                <input hidden name="TestId" value="@test.Id" />
+                                <input hidden name="CourseId" value="@course.Id" />
+                                <input hidden name="TestCourseTopicId" value="@Model.Id" />
+                                <input type="submit" class="btn red" id="StopTest" value="Закончить и отправить тест" />
+                            }
+                            <span class="lineDate icon stopTestIcon"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@{
+    String GetTimeNumber(int number) {
+        return number.ToString().Length == 1 ? $"0{number}" : $"{number}";
+    }
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Test")
+}

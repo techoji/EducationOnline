@@ -1,0 +1,27 @@
+﻿@model IEnumerable<StatisticVM>
+
+<tr>
+    <th>
+        Почта
+    </th>
+    <th>
+        Фамилия
+    </th>
+    <th>
+        Имя
+    </th>
+    <th>
+        Файл
+    </th>
+    <th>
+        Статус
+    </th>
+    <th>
+        Управление
+    </th>
+</tr>
+
+@foreach (StatisticVM statistic in Model) {
+    @Html.Partial("Partial/_StatisticRow", statistic)
+}
+

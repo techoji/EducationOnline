@@ -1,0 +1,80 @@
+﻿@model DistanceLearning.Models.File
+
+@{
+    CourseTopicFile courseTopicFile = ViewData["CourseTopicFile"] as CourseTopicFile;
+    String labName = courseTopicFile.IsVariant ? courseTopicFile.Name : Model.Name;
+    ViewBag.Title = $"Лаборатория - {labName}";
+}
+@Styles.Render("~/lab")
+
+<div class="labContent">
+    <h4>@labName</h4>
+    <div class="canvasContainer">
+        <p class="info-block"><strong>Выбрав</strong> инструмент, <strong>нажмите</strong> на область изображения, чтобы получить более детальную информацию о данном месте</p>
+        <div class="canvasBorder">
+            <div class="canvasBox">
+                <img id="CanvasTools" data-file="@Model.FileId" data-courseTopicFile="@courseTopicFile.CourseTopicFileId" src="~/Content/Laboratory/@(courseTopicFile.Course.ShortName)/@(ViewData["FileName"])" alt="Alternate Text" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section leftBox{
+    <div class="tools leftMenu">
+        <div class="blockName architecture">
+            <span class="iconBox">architecture</span>
+            <h4>Инструменты</h4>
+        </div>
+        <ul class="clickable">
+            <li id="Densitometer">
+                <img src="~/Content/img/denc.png" alt="Alternate Text" />
+                <p>Денситометр</p>
+            </li>
+            <li id="Spectrum">
+                <img src="~/Content/img/spectro.png" alt="Alternate Text" />
+                <p>Спектрофотометр</p>
+            </li>
+        </ul>
+    </div>
+    <div class="help leftMenu">
+        <div class="blockName hotkey">
+            <span class="iconBox">fullscreen</span>
+            <h4>Навигация</h4>
+        </div>
+        <ul>
+            <li class="icon horisontal">
+                <h4>Shift + Scroll</h4>
+                <p>Прокрутка по горизонтали</p>
+            </li>
+            <li class="icon vertical">
+                <h4>Scroll</h4>
+                <p>Прокрутка по вертикали</p>
+            </li>
+        </ul>
+    </div>
+}
+
+@section rightBox{
+    <div class="result">
+        <div class="blockName science">
+            <span class="iconBox">science</span>
+            <h4>Результат</h4>
+        </div>
+        <div class="resultBorder">
+            <ul class="resultList" id="result"></ul>
+        </div>
+    </div>
+}
+
+@section siteLogo{
+    <a class="iconBox" href="/pages/course/@courseTopicFile.CourseId">keyboard_backspace</a>
+    <p class="iconBox lab">biotech</p>
+    <div class="logoName">
+        <h4>Education</h4>
+        <span class="subtext">Laboratory</span>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Lab")
+}

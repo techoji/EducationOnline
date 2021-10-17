@@ -1,0 +1,49 @@
+﻿@model LoginViewModel
+@{
+    ViewBag.Title = "Вход | Distance Learning";
+}
+@Styles.Render("~/form")
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="active-nav basic" href="/account/login">Вход</a>
+</p>
+
+<div class="centerContainer">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal" })) {
+        @Html.AntiForgeryToken()
+        <div class="form-inputs">
+            <div class="form-block">
+                <p>Выполните вход</p>
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Почта", @value = $"{Model?.Email}" })
+                @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+            <div class="inputBox">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                @Html.LabelFor(m => m.RememberMe)
+            </div>
+            <div class="form-block center">
+                <p>Или</p>
+                <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            </div>
+            <input type="submit" value="Выполнить вход" class="active" />
+        </div>
+    }
+    <div class="form-addition">
+        <p>
+            @Html.ActionLink("Забыли пароль?", "ForgotPassword")
+        </p>
+        <p>
+            @Html.ActionLink("Регистрация нового пользователя", "Register")
+        </p>
+    </div>
+
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

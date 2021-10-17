@@ -1,0 +1,19 @@
+﻿@model CourseGroupVM
+
+<tr id="courseGroupRow@(Model.Id)">
+    <td>
+        @Model.Course.Name
+    </td>
+    <td>
+        @Model.Course.ShortName
+    </td>
+    <td>
+        @(Model.Group?.Name)
+    </td>
+    <td>
+        <div class="btnBox">
+            @Ajax.ActionLink("Редактировать", "EditCourseGroup", new { Id = Model.Id, GroupId = Model.Group?.Id, CourseId = Model.Course.Id }, new AjaxOptions { UpdateTargetId = $"courseGroupRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @Ajax.ActionLink("Удалить из курса", "DeleteCourseGroup", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"courseGroupRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn red" })
+        </div>
+    </td>
+</tr>

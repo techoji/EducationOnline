@@ -1,0 +1,307 @@
+﻿.grid {
+    margin-top: 50px;
+}
+
+body {
+    background: url('/Content/img/2.jpg');
+    background-size: 180px;
+    background-position-y: 130px;
+    background-repeat: repeat;
+}
+
+.centerBox {
+    width: 50%;
+    padding-bottom: 20px;
+}
+
+.leftBox {
+    flex: 2;
+}
+
+.rightBox {
+    flex: 3;
+}
+
+.leftBox,
+.rightBox {
+    margin-top: 20px;
+}
+
+    .leftBox .box-container,
+    .rightBox .box-container {
+        top: 95px;
+    }
+
+    .leftBox .box-container,
+    .rightBox .box-container {
+        top: 70px;
+    }
+
+.leftMenu {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding-bottom: 10px;
+    border-bottom: 5px solid white;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.help {
+    margin-top: 40px;
+}
+
+    .help li h4 {
+        color: #4487C5;
+    }
+
+.result {
+    padding-bottom: 20px;
+    overflow: hidden;
+}
+
+    .result .blockName {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 0;
+        background-color: white;
+    }
+
+.leftMenu .blockName {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #EBEBEB;
+    padding: 20px;
+    margin-bottom: 10px;
+    background-color: white;
+    padding-right: 50px;
+}
+
+.blockName.architecture {
+    color: #C54444;
+}
+
+.blockName.science {
+    color: #4487C5;
+}
+
+.blockName.hotkey {
+    color: #4487C5;
+}
+
+    .blockName.hotkey span.iconBox {
+        transform: rotate(45deg);
+    }
+
+.blockName .iconBox {
+    font-size: 1.5rem;
+}
+
+.result .blockName h4,
+.leftMenu .blockName h4 {
+    margin-left: 20px;
+    letter-spacing: 1.5px;
+}
+
+.result .blockName h4 {
+    margin-left: 20px;
+}
+
+.leftMenu ul {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    list-style: none;
+}
+
+    .leftMenu ul li {
+        margin: 5px 0;
+        padding: 10px 0 10px 25px;
+    }
+
+    .leftMenu ul.clickable li {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, .5);
+    }
+
+        .leftMenu ul.clickable li.toolActive {
+            color: #C54444;
+            border-color: #C54444;
+            background-color: white;
+        }
+
+        .leftMenu ul.clickable li:hover {
+            color: #C54444;
+            background-color: white;
+        }
+
+    .leftMenu ul li img {
+        height: 25px;
+        margin: 15px;
+    }
+
+    .leftMenu ul:not(.clickable) li {
+        background-color: white;
+        padding: 15px 40px 15px 100px;
+    }
+
+.leftMenu.tools ul li p {
+    margin-left: 20px;
+}
+
+.labContent {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+}
+
+    .labContent h4 {
+        text-align: center;
+        padding: 18px 0;
+        font-size: 1.2rem;
+        color: #C54444;
+        letter-spacing: 1.5px;
+        background-color: white;
+        margin-top: 10px;
+    }
+
+    .labContent .canvasBox img {
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+.canvasContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px 20px 20px;
+    backdrop-filter: blur(1px);
+    -webkit-backdrop-filter: blur(1px);
+    background-color: rgba(255, 255, 255, .5);
+    border-bottom: 5px solid white;
+}
+
+    .canvasContainer > p {
+        width: 100%;
+        text-align: left;
+    }
+
+.canvasBorder {
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: white;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.canvasBox {
+    overflow: auto;
+    position: relative;
+}
+
+.resultList {
+    list-style: none;
+    max-height: 75vh;
+    overflow-y: auto;
+}
+
+    .canvasContainer::-webkit-scrollbar,
+    .resultList::-webkit-scrollbar {
+        display: none;
+    }
+
+    .resultList li {
+        display: none;
+        margin: 10px 0;
+        padding: 10px 20px;
+        background-color: white;
+    }
+
+        .resultList li .resultContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding-left: 10px;
+        }
+
+        .resultList li .resultName {
+            display: flex;
+            margin-top: 15px;
+            flex-direction: column;
+        }
+
+        .resultList li:first-child {
+            margin-top: 10px;
+            margin-left: 0;
+        }
+
+        .resultList li h4 {
+            position: relative;
+        }
+
+        .resultList li .resultData p {
+            position: relative;
+        }
+
+        .resultList li p.tool {
+            font-size: .9rem;
+            margin-top: 8px;
+        }
+
+        .resultList li .resultData span {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: black;
+            font-weight: normal;
+        }
+
+.resultBorder {
+    background-color: rgba(255, 255, 255, .5);
+    padding: 10px 0;
+    border-bottom: 5px solid white;
+}
+
+.resultData {
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
+
+    .resultData > * {
+        padding: 5px 15px;
+        border-radius: 5px;
+        margin: 0px 3px 35px 3px;
+        font-weight: bold;
+    }
+
+.resultList li .resultData > * {
+    background-color: #F5F5F5;
+}
+
+/*icons*/
+.leftMenu.help li.icon:before {
+    left: 25px;
+    top: 15px;
+    font-size: 1.8rem;
+    border-radius: 50%;
+}
+
+.leftMenu.help li.icon.horisontal:before {
+    content: 'unfold_more';
+    transform: rotateZ(90deg);
+}
+
+.leftMenu.help li.icon.vertical:before {
+    content: 'unfold_more';
+}

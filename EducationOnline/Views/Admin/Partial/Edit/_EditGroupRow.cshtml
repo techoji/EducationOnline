@@ -1,0 +1,16 @@
+﻿@model Group
+
+<tr id="groupRow@(Model.GroupId)">
+    <td>
+        <input form="formGroup@(Model.GroupId)" value="@(Model.Name)" type="text" placeholder="@Model.Name" name="Name" />
+    </td>
+    <td>
+        <div class="btnBox">
+            @using (Ajax.BeginForm("SaveGroup", null, new AjaxOptions { UpdateTargetId = $"groupRow{Model.GroupId}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { id = $"formGroup{Model.GroupId}" })) { }
+            <input form="formGroup@(Model.GroupId)" value="@Model.GroupId" name="GroupId" hidden />
+            <input form="formGroup@(Model.GroupId)" type="submit" value="Сохранить" class="btn green" />
+            @Ajax.ActionLink("Отмена", "CancelGroup", new { Model.GroupId, Model.Name }, new AjaxOptions { UpdateTargetId = $"groupRow{Model.GroupId}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+        </div>
+    </td>
+</tr>
+

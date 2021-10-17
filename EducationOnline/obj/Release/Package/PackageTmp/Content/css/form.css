@@ -1,0 +1,102 @@
+﻿form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #E6E6E6;
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.form-inputs {
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    border: 1px solid #E6E6E6;
+    border-radius: 10px;
+    padding: 10px 30px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    outline: none;
+    transition: .2s;
+}
+
+    input:focus {
+        border-color: #426FC5;
+    }
+
+    input[type="submit"] {
+        margin-top: 20px;
+    }
+
+        input[type="submit"]:hover {
+            background-color: #426FC5;
+            color: white;
+            cursor: pointer;
+        }
+
+    input.active {
+        color: white;
+        background-color: #426FC5;
+    }
+
+        input.active:hover {
+            background-color: #3E67B6;
+        }
+
+.inputBox {
+    display: flex;
+    align-items: center;
+}
+
+    .inputBox > * {
+        margin: 0 5px;
+    }
+
+.form-addition {
+    display: flex;
+    margin-top: 20px;
+}
+
+    .form-addition > * {
+        margin: 10px;
+    }
+
+    .form-addition a {
+        color: gray;
+    }
+
+.form-block {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid #426FC5;
+    padding: 30px 20px;
+    padding-bottom: 0;
+    margin: 20px 0;
+    position: relative;
+}
+
+    .form-block:not(:first-child) {
+        margin-top: 50px;
+    }
+
+.form-block p {
+    position: absolute;
+    top: -13px;
+    background-color: white;
+    padding: 0 10px;
+}
+
+.text-danger {
+    display: flex;
+    justify-content: center;
+}
+
+    .text-danger ul li {
+        color: darkred;
+    }
+
+.form-horizontal{
+    background-color:white;
+}

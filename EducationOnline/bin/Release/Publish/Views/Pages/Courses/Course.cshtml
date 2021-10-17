@@ -1,0 +1,70 @@
+﻿@model CourseVM
+
+@{
+    ViewBag.Title = Model.Name;
+
+    bool IsTeacher = ViewBag.IsTeacher ?? false;
+    bool IsEdit = ViewBag.CourseEdit == "yes";
+
+    int ColorHue = ViewBag.UserCourseColor;
+    String lightColor = $"hsl({ColorHue}, 100%, 98.5%)";
+    String darkedColor = $"hsl({ColorHue}, 53%, 52%)";
+}
+
+@Styles.Render("~/courses")
+@Styles.Render("~/table")
+@Styles.Render("~/admin")
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/account/profile">Личный кабинет</a>
+    >
+    <a class="basic" href="/pages/courses">Мои курсы</a>
+    >
+    <a style="color: @(darkedColor); background-color: @(lightColor)" class="active-nav courseNav" href="/pages/course/@Model.Id">@Model.Name</a>
+</p>
+<div class="courseContainer" id="CourseContainer" data-edit="@IsEdit" data-course="@Model.Id"></div>
+<div id="PopupUpload">
+    <div class="popupName">
+        <span class="iconBox">crop</span>
+        <h4 id="LoadingText">Сжатие изображения</h4>
+    </div>
+    <div class="popupLoading">
+        <span id="LoadingPercent"></span>
+    </div>
+    <p id="LoadingPercentText">0%</p>
+</div>
+
+@section rightBox{
+    @if (IsTeacher) {
+        <div class="card box">
+            <div class="card mini">
+                <div class="addContainer">
+                    <div class="btnBox">
+                        @if (IsEdit) {
+                            <a class="btn" href="/pages/course/@(Model.Id)">Вернуться в курс</a>
+                        }
+                        else {
+                            <a class="btn" href="/pages/course/@(Model.Id)?edit=yes">Редактировать курс</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section contextMenu{
+    <div id="context-menu">
+        <ul>
+            <li class="icon" id="context-lab">
+                <a href="" target="_blank">Открыть в лаборатории</a>
+            </li>
+        </ul>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Course")
+}

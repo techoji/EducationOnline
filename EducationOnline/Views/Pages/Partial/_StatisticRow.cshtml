@@ -1,0 +1,33 @@
+﻿@model StatisticVM
+
+<tr id="statisticRow@(Model.Id)">
+    <td>
+        @Model.User.Email
+    </td>
+    <td>
+        @Model.User.LastName
+    </td>
+    <td>
+        @Model.User.FirstName
+    </td>
+    <td>
+        @Model.File.Name
+    </td>
+    <td>
+        @if (Model.PerformedAt != null) {
+            @Model.PerformedAt.Value.ToString("d MMMM в HH:mm", new System.Globalization.CultureInfo("ru-RU"))
+        }
+        else {
+            @("Не пройдено")
+        }
+    </td>
+    <td>
+        <div class="btnBox">
+            @Ajax.ActionLink("Редактировать файл", "EditStatistic", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"statisticRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @Ajax.ActionLink("Пометить как невыполненное", "ResetStatistic", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"statisticRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @if (User.Identity.Name != Model.User.Email) {
+                @Ajax.ActionLink("Удалить задание", "DeleteStatistic", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"statisticRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn red" })
+            }
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DistanceLearning.Models.File>
+
+@{
+    IEnumerable<FileLocationVM> fileLocations = ViewBag.FileLocations;
+    IEnumerable<FileType> LabTypes = (ViewBag.LabTypes as IEnumerable<FileType>);
+    IEnumerable<DistanceLearning.Models.File> files = Model.Where(f => LabTypes.Select(x => x.FileTypeId).Contains(f.FileTypeId));
+    FileLocationVM fileLocation;
+    String fileType;
+    String[] locationSplit;
+    String course;
+    String fileName;
+}
+
+@foreach (DistanceLearning.Models.File file in files) {
+    fileLocation = fileLocations.FirstOrDefault(f => f.FileId == file.FileId);
+    fileType = LabTypes.FirstOrDefault(l => l.FileTypeId == file.FileTypeId).Name.ToLower();
+    locationSplit = fileType.Contains("tools") ? locationSplit = fileLocation.FileLocation.Split('\\') : fileLocation.AttachedFileLocation.Split('\\');
+    course = locationSplit[locationSplit.Length - 2];
+    fileName = locationSplit[locationSplit.Length - 1];
+    <label>
+        <img src="~/Content/Laboratory/@course/@fileName" alt="Alternate Text" />
+        <span>
+            <input type="checkbox" name="FilesId" value="@file.FileId" />
+            @file.Name
+        </span>
+    </label>
+}
+
+<script>
+    $('#FileContainerTopic label').mouseup(function () {
+        $(this).toggleClass('selected');
+    });
+</script>

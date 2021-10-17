@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Курсы";
+}
+
+@Styles.Render("~/courses")
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/account/profile">Личный кабинет</a>
+    >
+    <a class="basic active-nav" href="/pages/courses">Мои курсы</a>
+</p>
+<div class="courses" id="Courses"></div>
+
+@section contextMenu{
+    <div id="context-menu">
+        <h4></h4>
+        <ul>
+            <li class="icon colorSelect" id="context-color">
+                <label>
+                    <input type="color" value="Color" />
+                    Сменить цвет
+                </label>
+            </li>
+            <li class="icon bookmark" id="context-bookmark">
+                <p>
+                    Добавить в избранные
+                </p>
+            </li>
+        </ul>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Courses")
+}

@@ -1,0 +1,31 @@
+﻿@model CourseGroupVM
+
+@{
+    List<Group> groups = ViewBag.Groups;
+}
+
+<tr id="courseGroupRow@(Model.Id)">
+    <td>
+        @Model.Course.Name
+    </td>
+    <td>
+        @Model.Course.ShortName
+    </td>
+    <td>
+        <select form="formCourseGroup@(Model.Id)" name="GroupId">
+            @foreach (Group group in groups) {
+                <option value="@group.GroupId">@group.Name</option>
+            }
+        </select>
+    </td>
+    <td>
+        <div class="btnBox">
+            @using (Ajax.BeginForm("SaveCourseGroup", null, new AjaxOptions { UpdateTargetId = $"courseGroupRow{Model.Id}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { id = $"formCourseGroup{Model.Id}" })) { }
+            <input value="@Model.Course.Id" name="CourseId" hidden form="formCourseGroup@(Model.Id)" />
+            <input value="@Model.Id" name="Id" hidden form="formCourseGroup@(Model.Id)" />
+            <input value="@Model.GroupId" name="WasGroupId" hidden form="formCourseGroup@(Model.Id)" />
+            <input form="formCourseGroup@(Model.Id)" type="submit" value="Сохранить" class="btn green" />
+            @Ajax.ActionLink("Отмена", "CancelCourseGroup", new { Id = Model.Id, CourseId = Model.Course.Id, GroupId = Model.Group?.Id }, new AjaxOptions { UpdateTargetId = $"courseGroupRow{Model.Id}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+        </div>
+    </td>
+</tr>

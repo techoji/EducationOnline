@@ -1,0 +1,90 @@
+﻿@model IEnumerable<StatisticVM>
+@Styles.Render("~/table")
+@Styles.Render("~/admin")
+@{
+    Course course = ViewBag.Course;
+    CourseTopic courseTopic = ViewBag.CourseTopic;
+    int courseTopicFileId = ViewBag.CourseTopicFileId;
+
+    foreach (StatisticVM userCourseFile in Model) {
+        userCourseFile.Update();
+    }
+
+    StatisticVM statisticFirst = Model.FirstOrDefault();
+    String fileName = "";
+    if (statisticFirst != null) {
+        fileName = $" ({(statisticFirst.CourseTopicFile.IsVariant ? statisticFirst.CourseTopicFile.Name : statisticFirst.File.Name)})";
+    }
+
+    String titleText = courseTopic != null ? $"{courseTopic.SectionName}{fileName} - Статистика" : $"Корень курса{fileName} - Статистика";
+    ViewBag.Title = titleText + $" | {course.Name}";
+
+    int ColorHue = ViewBag.UserCourseColor;
+    String lightColor = $"hsl({ColorHue}, 100%, 98.5%)";
+    String darkedColor = $"hsl({ColorHue}, 53%, 52%)";
+
+    String search = ViewBag.Search;
+}
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/account/profile">Личный кабинет</a>
+    >
+    <a class="basic" href="/pages/courses">Мои курсы</a>
+    >
+    <a onmouseenter="this.style.backgroundColor = @($"\"{lightColor}\"")" onmouseleave="this.style.backgroundColor = @($"\"transparent\"")" style="color: @(darkedColor);" class="courseNav" href="/pages/course/@course.CourseId">@course.Name</a>
+    >
+    @if (!String.IsNullOrWhiteSpace(search)) {
+        <a onmouseenter="this.style.backgroundColor = @($"\"{lightColor}\"")" onmouseleave="this.style.backgroundColor = @($"\"transparent\"")" style="color: @(darkedColor);" class="active-nav courseNav" href="/pages/statistics/@courseTopicFileId">@titleText</a>
+        @(">")
+        <a style="color: @(darkedColor); background-color: @(lightColor)" class="active-nav courseNav" href="/pages/statistics/@courseTopicFileId?search=@search">Поиск (@search)</a>
+    }
+    else {
+        <a style="color: @(darkedColor); background-color: @(lightColor)" class="active-nav courseNav" href="/pages/statistics/@courseTopicFileId">@titleText</a>
+    }
+</p>
+
+<div class="manageContainer">
+    @if (Model.Count() == 0) {
+        if (String.IsNullOrWhiteSpace(search)) {
+            <p class="resultNull manageNull icon">Нет результатов</p>
+        }
+        else {
+            <p class="searchNull searchNull icon">Ничего не найдено</p>
+        }
+    }
+    else {
+        <div class="tableContainer">
+            <table id="StatisticsTable">
+                @Html.Partial("Partial/Tables/_TableStatistics", Model.OrderBy(u => u.User.LastName).ThenBy(x => x.User.FirstName).ToList())
+            </table>
+        </div>
+    }
+</div>
+
+@section rightBox{
+    <div class="card">
+        <div class="card mini">
+            <div class="search">
+                @using (Html.BeginForm($"statistics/{courseTopicFileId}", "pages", FormMethod.Get, new { id = "searchForm" })) { }
+                <input form="searchForm" type="search" id="Search" name="search" placeholder="Поиск" />
+                <input form="searchForm" type="button" class="btn iconBox active" value="search" id="SearchButton" />
+            </div>
+        </div>
+        <div class="card mini">
+            <div class="addContainer">
+                @if (Model.Count() > 0) {
+                    <div class="btnBox">
+                        @Html.ActionLink("Скачать Excel-файл", "ExportData", "pages", new { course.CourseId, courseTopicFileId }, new { @class = "btn green" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Course")
+    @Scripts.Render("~/js/Admin/Search")
+}

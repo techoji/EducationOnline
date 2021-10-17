@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>@ViewBag.Title @(" | Education Online")</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="google-signin-client_id" content="78238180471-d13iejofqhrmu6fegvounbs55gm4pinq.apps.googleusercontent.com" />
+    @Styles.Render("~/common")
+</head>
+<body>
+    <header>
+        <div class="logoBox">
+            @if (ViewBag.HideSiteLogo ?? false) {
+                @RenderSection("siteLogo", required: false)
+            }
+            else {
+                <a href="/">
+                    <img src="~/Content/img/logo.png" alt="Alternate Text" />
+                    <div class="logoName">
+                        <h4>Education</h4>
+                        <span class="subtext">Online</span>
+                    </div>
+                </a>
+            }
+        </div>
+        <div class="profileBox">
+            @{
+                UserVM user = Session["user"] as UserVM;
+                if (user == null && User.Identity.IsAuthenticated) {
+                    using (DbManager db = new DbManager()) {
+                        user = new UserVM(db.GetUserByEmail(User.Identity.Name));
+                        Session["user"] = user;
+                    }
+                }
+            }
+            @if (user != null) {
+                <div class="userNameBox">
+                    <p>@user.LastName @user.FirstName</p>
+                </div>
+                if (user.Photo != null) {
+                    <div class="photoBox">
+                        <img src="@user.Photo" />
+                    </div>
+                }
+            }
+            else {
+                <div class="userNameBox">
+                    <span></span>
+                </div>
+                <div class="photoBox">
+                    <span></span>
+                </div>
+            }
+        </div>
+    </header>
+    <main>
+        <div class="grid">
+            <div class="leftBox box">
+                <div class="box-container">
+                    @if (ViewBag.ShowNavigation ?? true) {
+                        <div class="card">
+                            <div class="card mini">
+                                <p>Навигация</p>
+                                <ul class="navigation">
+                                    <li class="icon home"><a href="/">Главная</a></li>
+                                    <li class="icon myCourses"><a href="/pages/courses">Мои курсы</a></li>
+                                </ul>
+                            </div>
+                            <div class="card mini">
+                                <p>Профиль</p>
+                                <ul class="navigation">
+                                    @if (User.Identity.IsAuthenticated) {
+                                        <li class="icon myProfile"><a href="/account/profile">Личный кабинет</a></li>
+                                        <li class="icon exit"><a onclick="signOut();" href="/account/logout">Выход</a></li>
+                                    }
+                                    else {
+                                        <li class="icon login"><a href="/account/login">Войти</a></li>
+                                        <li class="icon reg"><a href="/account/register">Регистрация</a></li>
+                                    }
+                                </ul>
+                            </div>
+                            @using (DbManager db = new DbManager()) {
+                                List<Course> courses = db.GetUserCoursesByUserEmail(User.Identity.Name);
+                                if (User.Identity.IsAuthenticated && courses.Count > 0) {
+                                    <div class="card mini">
+                                        <p>Курсы</p>
+                                        <ul class="navigation">
+                                            @for (int i = 0; i < 4; i++) {
+                                                if (courses.Count == i) {
+                                                    break;
+                                                }
+                                                <li class="icon subject">
+                                                    <a href="/pages/course/@courses[i].CourseId">@(courses[i].Name + (String.IsNullOrWhiteSpace(courses[i].ShortName) ? "" : $" ({courses[i].ShortName})"))</a>
+                                                </li>
+                                            }
+                                            <li class="icon myCourses">
+                                                <a href="/pages/courses">Все курсы</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            }
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("admin")) {
+                                <div class="card mini">
+                                    <p>Администрирование</p>
+                                    <ul class="navigation">
+                                        <li class="icon database"><a href="/admin/management/users">Пользователи</a></li>
+                                        <li class="icon database"><a href="/admin/management/groups">Группы</a></li>
+                                        <li class="icon database"><a href="/admin/management/courses">Курсы</a></li>
+                                    </ul>
+                                </div>
+                            }
+                        </div>
+                    }
+                    @RenderSection("leftBox", required: false)
+                </div>
+            </div>
+            <div class="centerBox box">
+                @RenderBody()
+            </div>
+            <div class="rightBox box">
+                <div class="box-container">
+                    @RenderSection("rightBox", required: false)
+                    @if (User.Identity.IsAuthenticated) {
+                        if (ViewBag.ShowCourseEvents ?? false) {
+                            <div class="card box events">
+                                <div class="card mini container">
+                                    <p class="icon event">Предстоящие события</p>
+                                    <ul class="clickable" id="CourseEvents">
+                                        @Html.Action("UpdateCourseEvents", "pages", new { IsUpdateEvents = ViewBag.UpdateEvents ?? false })
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        @RenderSection("contextMenu", required: false)
+    </main>
+    @*<footer>
+            <img src="https://greensxn.neocities.org/img/logo.gif" alt="Alternate Text" />
+        </footer>*@
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery.unobtrusive-ajax.js")
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/js/Common")
+    @Scripts.Render("~/js/Login")
+</body>
+</html>

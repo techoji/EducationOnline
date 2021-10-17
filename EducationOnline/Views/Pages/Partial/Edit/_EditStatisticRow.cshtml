@@ -1,0 +1,43 @@
+﻿@model StatisticVM
+
+@{
+    List<DistanceLearning.Models.File> files = ViewBag.Files;
+}
+
+<tr id="statisticRow@(Model.Id)">
+    <td>
+        @Model.User.Email
+    </td>
+    <td>
+        @Model.User.LastName
+    </td>
+    <td>
+        @Model.User.FirstName
+    </td>
+    <td>
+        <select form="formStatistic@(Model.Id)" name="FileId">
+            <option value="0">Выдать случайно</option>
+            @foreach (DistanceLearning.Models.File file in files) {
+                <option value="@file.FileId">@file.Name</option>
+            }
+        </select>
+    </td>
+    <td>
+        @if (Model.PerformedAt != null) {
+            @Model.PerformedAt.Value.ToString("d MMMM в HH:mm", new System.Globalization.CultureInfo("ru-RU"))
+        }
+        else {
+            @("Не пройдено")
+        }
+    </td>
+    <td>
+        <div class="btnBox">
+            @using (Ajax.BeginForm("SaveStatistic", null, new AjaxOptions { UpdateTargetId = $"statisticRow{Model.Id}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { id = $"formStatistic{Model.Id}" })) { }
+            <input form="formStatistic@(Model.Id)" value="@Model.Id" name="StatisticId" hidden />
+            <input form="formStatistic@(Model.Id)" value="@Model.UserId" name="UserId" hidden />
+            <input form="formStatistic@(Model.Id)" value="@Model.CourseTopicFileId" name="CourseTopicFileId" hidden />
+            <input form="formStatistic@(Model.Id)" type="submit" value="Обновить файл" class="btn green" />
+            @Ajax.ActionLink("Отмена", "CancelStatistic", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"statisticRow{Model.Id}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+        </div>
+    </td>
+</tr>

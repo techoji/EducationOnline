@@ -1,0 +1,18 @@
+﻿@model Group
+
+@{
+    List<Course> courses = ViewBag.Courses;
+    IEnumerable<CourseGroupVM> courseGroups = ViewBag.CourseGroups;
+}
+
+<tr id="groupRow@(Model.GroupId)">
+    <td>
+        @Model.Name
+    </td>
+    <td>
+        <div class="btnBox">
+            @Ajax.ActionLink("Редактировать название", "EditGroup", new { Model.GroupId, Model.Name }, new AjaxOptions { UpdateTargetId = $"groupRow{Model.GroupId}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @Ajax.ActionLink("Удалить группу", "DeleteGroup", new { Model.GroupId }, new AjaxOptions { UpdateTargetId = $"groupRow{Model.GroupId}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn red" })
+        </div>
+    </td>
+</tr>

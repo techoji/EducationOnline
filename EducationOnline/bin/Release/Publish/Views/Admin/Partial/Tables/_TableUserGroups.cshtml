@@ -1,0 +1,31 @@
+﻿@model IEnumerable<UserGroupVM>
+
+@{
+    UserVM user = ViewBag.User as UserVM;
+}
+
+<div class="tableContainer">
+    <table>
+        <tr>
+            <th>
+                Почта
+            </th>
+            <th>
+                Фамилия
+            </th>
+            <th>
+                Имя
+            </th>
+            <th>
+                Группа
+            </th>
+            <th>
+                Управление
+            </th>
+        </tr>
+
+        @foreach (UserGroupVM userGroup in Model) {
+            @Html.Partial("Partial/_UserGroupRow", new UserGroupVM { Id = userGroup.Id, User = user, Group = userGroup.GetGroup() })
+        }
+    </table>
+</div>

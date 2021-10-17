@@ -1,0 +1,32 @@
+﻿@model User
+
+@{
+    List<Group> groups = ViewBag.Groups;
+    IEnumerable<UserGroupVM> userGroups = ViewBag.UserGroups;
+}
+
+<tr id="userRow@(Model.UserId)">
+    <td>
+        @Model.Email
+    </td>
+    <td>
+        @Model.LastName
+    </td>
+    <td>
+        @Model.FirstName
+    </td>
+    <td>
+        @{
+            IEnumerable<UserGroupVM> userGroup = userGroups.Where(u => u.UserId == Model.UserId);
+            if (userGroup.Count() > 0) {
+                @(String.Join(", ", groups.Where(g => userGroup.Select(x => x.GroupId).Contains(g.GroupId)).Select(z => z.Name)))
+            }
+        }
+    </td>
+    <td>
+        <div class="btnBox">
+            @Html.ActionLink("Редактировать группы", "UserGroups", new { Model.UserId }, new { @class = "btn" })
+            @Ajax.ActionLink("Удалить пользователя", "DeleteUser", new { Model.UserId }, new AjaxOptions { UpdateTargetId = $"userRow{Model.UserId}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn red" })
+        </div>
+    </td>
+</tr>

@@ -1,0 +1,79 @@
+﻿.mainContainer {
+    padding: 20px;
+    border-bottom: 5px solid white;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+.newsBox:not(:first-child) {
+    margin-top: 20px;
+}
+
+.newsContent {
+    display: flex;
+    background-color: white;
+    padding: 20px;
+}
+
+    .newsContent img {
+        border-radius: 50%;
+        height: 50px;
+        margin-right: 20px;
+    }
+
+.userMessage {
+    display: flex;
+    flex-direction: column;
+}
+
+.reaction {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 10px 20px;
+    border-top: 1px solid #EBEBEB;
+    background-color: white;
+}
+
+    .reaction > .iconBox,
+    .reaction p {
+        display: flex;
+        align-items: center;
+        padding: 10px 20px;
+        background-color: #FAFAFA;
+        border-radius: 20px;
+        transition: .2s;
+    }
+
+    .reaction > .clicked {
+        cursor: pointer;
+    }
+
+        .reaction > .clicked:hover {
+            background-color: #F5F5F5;
+        }
+
+    .reaction .iconBox {
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+
+    .reaction > *:not(:last-child) {
+        margin-right: 20px;
+    }
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 5px;
+    border-bottom: 5px solid white;
+    background-color: rgba(255, 255, 255, .5);
+}
+
+    .tags > * {
+        color: #426FC5;
+        background-color: white;
+        border-radius: 20px;
+        padding: 5px 15px;
+        margin: 5px;
+    }

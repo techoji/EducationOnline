@@ -1,0 +1,712 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DistanceLearningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="CourseGroups">
+    <Key>
+      <PropertyRef Name="CourseGroupId" />
+    </Key>
+    <Property Name="CourseGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseId" Type="Int32" />
+    <Property Name="GroupId" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__CourseGro__Cours__67A95F59" FromRole="CourseGroups" ToRole="Courses" />
+    <NavigationProperty Name="Groups" Relationship="Self.FK__CourseGro__Group__689D8392" FromRole="CourseGroups" ToRole="Groups" />
+  </EntityType>
+  <EntityType Name="Courses">
+    <Key>
+      <PropertyRef Name="CourseId" />
+    </Key>
+    <Property Name="CourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Year" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="CourseGroups" Relationship="Self.FK__CourseGro__Cours__67A95F59" FromRole="Courses" ToRole="CourseGroups" />
+    <NavigationProperty Name="CourseTopics" Relationship="Self.FK__CourseTop__Cours__62E4AA3C" FromRole="Courses" ToRole="CourseTopics" />
+    <NavigationProperty Name="CourseTopicFiles" Relationship="Self.FK__CourseTop__Cours__71F1E3A2" FromRole="Courses" ToRole="CourseTopicFiles" />
+    <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__Course__2D47B39A" FromRole="Courses" ToRole="Teachers" />
+    <NavigationProperty Name="TestCourseTopics" Relationship="Self.FK__TestCours__Cours__5EDF0F2E" FromRole="Courses" ToRole="TestCourseTopics" />
+    <NavigationProperty Name="UserCourses" Relationship="Self.FK__UserCours__Cours__436BFEE3" FromRole="Courses" ToRole="UserCourses" />
+    <NavigationProperty Name="UserTopicFilesDone" Relationship="Self.FK__UserTopic__Cours__3AD6B8E2" FromRole="Courses" ToRole="UserTopicFilesDone" />
+  </EntityType>
+  <EntityType Name="CourseTopicFiles">
+    <Key>
+      <PropertyRef Name="CourseTopicFileId" />
+    </Key>
+    <Property Name="CourseTopicFileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseTopicId" Type="Int32" />
+    <Property Name="FileId" Type="Int32" />
+    <Property Name="CourseId" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__CourseTop__Cours__71F1E3A2" FromRole="CourseTopicFiles" ToRole="Courses" />
+    <NavigationProperty Name="CourseTopics" Relationship="Self.FK__CourseTop__Cours__2C538F61" FromRole="CourseTopicFiles" ToRole="CourseTopics" />
+    <NavigationProperty Name="Files" Relationship="Self.FK__CourseTop__FileI__442B18F2" FromRole="CourseTopicFiles" ToRole="Files" />
+    <NavigationProperty Name="UserTopicFilesDone" Relationship="Self.FK__UserTopic__Cours__39AD8A7F" FromRole="CourseTopicFiles" ToRole="UserTopicFilesDone" />
+  </EntityType>
+  <EntityType Name="CourseTopics">
+    <Key>
+      <PropertyRef Name="CourseTopicId" />
+    </Key>
+    <Property Name="CourseTopicId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CourseId" Type="Int32" />
+    <Property Name="SectionName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Topic" Type="String" MaxLength="800" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__CourseTop__Cours__62E4AA3C" FromRole="CourseTopics" ToRole="Courses" />
+    <NavigationProperty Name="CourseTopicFiles" Relationship="Self.FK__CourseTop__Cours__2C538F61" FromRole="CourseTopics" ToRole="CourseTopicFiles" />
+    <NavigationProperty Name="TestCourseTopics" Relationship="Self.FK__TestCours__Cours__34E8D562" FromRole="CourseTopics" ToRole="TestCourseTopics" />
+  </EntityType>
+  <EntityType Name="Files">
+    <Key>
+      <PropertyRef Name="FileId" />
+    </Key>
+    <Property Name="FileId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FileTypeId" Type="Int32" />
+    <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CourseTopicFiles" Relationship="Self.FK__CourseTop__FileI__442B18F2" FromRole="Files" ToRole="CourseTopicFiles" />
+    <NavigationProperty Name="FileTypes" Relationship="Self.FK__Files__FileTypeI__4336F4B9" FromRole="Files" ToRole="FileTypes" />
+  </EntityType>
+  <EntityType Name="FileTypes">
+    <Key>
+      <PropertyRef Name="FileTypeId" />
+    </Key>
+    <Property Name="FileTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Files" Relationship="Self.FK__Files__FileTypeI__4336F4B9" FromRole="FileTypes" ToRole="Files" />
+  </EntityType>
+  <EntityType Name="Groups">
+    <Key>
+      <PropertyRef Name="GroupId" />
+    </Key>
+    <Property Name="GroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="120" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="CourseGroups" Relationship="Self.FK__CourseGro__Group__689D8392" FromRole="Groups" ToRole="CourseGroups" />
+    <NavigationProperty Name="UserGroups" Relationship="Self.FK__UserGroup__Group__3F9B6DFF" FromRole="Groups" ToRole="UserGroups" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="UserRoles" Relationship="Self.FK__UserRoles__RoleI__370627FE" FromRole="Roles" ToRole="UserRoles" />
+  </EntityType>
+  <EntityType Name="Teachers">
+    <Key>
+      <PropertyRef Name="TeacherId" />
+    </Key>
+    <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="CourseId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__Teachers__Course__2D47B39A" FromRole="Teachers" ToRole="Courses" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__Teachers__UserId__5E1FF51F" FromRole="Teachers" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="TestAnswers">
+    <Key>
+      <PropertyRef Name="TestAnswerId" />
+    </Key>
+    <Property Name="TestAnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TestId" Type="Int32" />
+    <Property Name="TestQuestionId" Type="Int32" />
+    <Property Name="Answer" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Tests" Relationship="Self.FK__TestAnswe__TestI__07E124C1" FromRole="TestAnswers" ToRole="Tests" />
+    <NavigationProperty Name="TestQuestions" Relationship="Self.FK__TestAnswe__TestQ__5A4F643B" FromRole="TestAnswers" ToRole="TestQuestions" />
+    <NavigationProperty Name="TestCorrectAnswers" Relationship="Self.FK__TestCorre__TestA__5090EFD7" FromRole="TestAnswers" ToRole="TestCorrectAnswers" />
+  </EntityType>
+  <EntityType Name="TestCorrectAnswers">
+    <Key>
+      <PropertyRef Name="TestCorrectAnswerId" />
+    </Key>
+    <Property Name="TestCorrectAnswerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TestId" Type="Int32" />
+    <Property Name="TestQuestionId" Type="Int32" />
+    <Property Name="TestAnswerId" Type="Int32" />
+    <NavigationProperty Name="TestAnswers" Relationship="Self.FK__TestCorre__TestA__5090EFD7" FromRole="TestCorrectAnswers" ToRole="TestAnswers" />
+    <NavigationProperty Name="Tests" Relationship="Self.FK__TestCorre__TestI__06ED0088" FromRole="TestCorrectAnswers" ToRole="Tests" />
+    <NavigationProperty Name="TestQuestions" Relationship="Self.FK__TestCorre__TestQ__558AAF1E" FromRole="TestCorrectAnswers" ToRole="TestQuestions" />
+  </EntityType>
+  <EntityType Name="TestCourseTopics">
+    <Key>
+      <PropertyRef Name="TestCourseTopicId" />
+    </Key>
+    <Property Name="TestCourseTopicId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TestId" Type="Int32" />
+    <Property Name="CourseTopicId" Type="Int32" />
+    <Property Name="CourseId" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__TestCours__Cours__5EDF0F2E" FromRole="TestCourseTopics" ToRole="Courses" />
+    <NavigationProperty Name="CourseTopics" Relationship="Self.FK__TestCours__Cours__34E8D562" FromRole="TestCourseTopics" ToRole="CourseTopics" />
+    <NavigationProperty Name="Tests" Relationship="Self.FK__TestCours__TestI__08D548FA" FromRole="TestCourseTopics" ToRole="Tests" />
+  </EntityType>
+  <EntityType Name="TestQuestions">
+    <Key>
+      <PropertyRef Name="TestQuestionId" />
+    </Key>
+    <Property Name="TestQuestionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TestId" Type="Int32" />
+    <Property Name="Question" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+    <Property Name="IsMultiplyAnswer" Type="Boolean" />
+    <NavigationProperty Name="TestAnswers" Relationship="Self.FK__TestAnswe__TestQ__5A4F643B" FromRole="TestQuestions" ToRole="TestAnswers" />
+    <NavigationProperty Name="TestCorrectAnswers" Relationship="Self.FK__TestCorre__TestQ__558AAF1E" FromRole="TestQuestions" ToRole="TestCorrectAnswers" />
+    <NavigationProperty Name="Tests" Relationship="Self.FK__TestQuest__TestI__05F8DC4F" FromRole="TestQuestions" ToRole="Tests" />
+  </EntityType>
+  <EntityType Name="Tests">
+    <Key>
+      <PropertyRef Name="TestId" />
+    </Key>
+    <Property Name="TestId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="TestAnswers" Relationship="Self.FK__TestAnswe__TestI__07E124C1" FromRole="Tests" ToRole="TestAnswers" />
+    <NavigationProperty Name="TestCorrectAnswers" Relationship="Self.FK__TestCorre__TestI__06ED0088" FromRole="Tests" ToRole="TestCorrectAnswers" />
+    <NavigationProperty Name="TestCourseTopics" Relationship="Self.FK__TestCours__TestI__08D548FA" FromRole="Tests" ToRole="TestCourseTopics" />
+    <NavigationProperty Name="TestQuestions" Relationship="Self.FK__TestQuest__TestI__05F8DC4F" FromRole="Tests" ToRole="TestQuestions" />
+  </EntityType>
+  <EntityType Name="UserCourses">
+    <Key>
+      <PropertyRef Name="UserCourseId" />
+    </Key>
+    <Property Name="UserCourseId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="CourseId" Type="Int32" />
+    <Property Name="DonePercent" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__UserCours__Cours__436BFEE3" FromRole="UserCourses" ToRole="Courses" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__UserCours__UserI__4277DAAA" FromRole="UserCourses" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="UserGroups">
+    <Key>
+      <PropertyRef Name="UserGroupId" />
+    </Key>
+    <Property Name="UserGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="GroupId" Type="Int32" />
+    <NavigationProperty Name="Groups" Relationship="Self.FK__UserGroup__Group__3F9B6DFF" FromRole="UserGroups" ToRole="Groups" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__UserGroup__UserI__3EA749C6" FromRole="UserGroups" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="UserRoles">
+    <Key>
+      <PropertyRef Name="UserRoleId" />
+    </Key>
+    <Property Name="UserRoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="RoleId" Type="Int32" />
+    <NavigationProperty Name="Roles" Relationship="Self.FK__UserRoles__RoleI__370627FE" FromRole="UserRoles" ToRole="Roles" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__UserRoles__UserI__361203C5" FromRole="UserRoles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Password" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Teachers" Relationship="Self.FK__Teachers__UserId__5E1FF51F" FromRole="Users" ToRole="Teachers" />
+    <NavigationProperty Name="UserCourses" Relationship="Self.FK__UserCours__UserI__4277DAAA" FromRole="Users" ToRole="UserCourses" />
+    <NavigationProperty Name="UserGroups" Relationship="Self.FK__UserGroup__UserI__3EA749C6" FromRole="Users" ToRole="UserGroups" />
+    <NavigationProperty Name="UserRoles" Relationship="Self.FK__UserRoles__UserI__361203C5" FromRole="Users" ToRole="UserRoles" />
+    <NavigationProperty Name="UserTopicFilesDone" Relationship="Self.FK__UserTopic__UserI__38B96646" FromRole="Users" ToRole="UserTopicFilesDone" />
+  </EntityType>
+  <EntityType Name="UserTopicFilesDone">
+    <Key>
+      <PropertyRef Name="UserTopicFileDoneId" />
+    </Key>
+    <Property Name="UserTopicFileDoneId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="CourseId" Type="Int32" />
+    <Property Name="CourseTopicFileId" Type="Int32" />
+    <NavigationProperty Name="Courses" Relationship="Self.FK__UserTopic__Cours__3AD6B8E2" FromRole="UserTopicFilesDone" ToRole="Courses" />
+    <NavigationProperty Name="CourseTopicFiles" Relationship="Self.FK__UserTopic__Cours__39AD8A7F" FromRole="UserTopicFilesDone" ToRole="CourseTopicFiles" />
+    <NavigationProperty Name="Users" Relationship="Self.FK__UserTopic__UserI__38B96646" FromRole="UserTopicFilesDone" ToRole="Users" />
+  </EntityType>
+  <Association Name="FK__CourseGro__Cours__67A95F59">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CourseGroups" Type="Self.CourseGroups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="CourseGroups">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CourseGro__Group__689D8392">
+    <End Role="Groups" Type="Self.Groups" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CourseGroups" Type="Self.CourseGroups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="CourseGroups">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CourseTop__Cours__62E4AA3C">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CourseTopics" Type="Self.CourseTopics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="CourseTopics">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CourseTop__Cours__71F1E3A2">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
+    <End Role="CourseTopicFiles" Type="Self.CourseTopicFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="CourseTopicFiles">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Teachers__Course__2D47B39A">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="Teachers">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCours__Cours__5EDF0F2E">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
+    <End Role="TestCourseTopics" Type="Self.TestCourseTopics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="TestCourseTopics">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserCours__Cours__436BFEE3">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserCourses" Type="Self.UserCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="UserCourses">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserTopic__Cours__3AD6B8E2">
+    <End Role="Courses" Type="Self.Courses" Multiplicity="0..1" />
+    <End Role="UserTopicFilesDone" Type="Self.UserTopicFilesDone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Courses">
+        <PropertyRef Name="CourseId" />
+      </Principal>
+      <Dependent Role="UserTopicFilesDone">
+        <PropertyRef Name="CourseId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CourseTop__Cours__2C538F61">
+    <End Role="CourseTopics" Type="Self.CourseTopics" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CourseTopicFiles" Type="Self.CourseTopicFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseTopics">
+        <PropertyRef Name="CourseTopicId" />
+      </Principal>
+      <Dependent Role="CourseTopicFiles">
+        <PropertyRef Name="CourseTopicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CourseTop__FileI__442B18F2">
+    <End Role="Files" Type="Self.Files" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="CourseTopicFiles" Type="Self.CourseTopicFiles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Files">
+        <PropertyRef Name="FileId" />
+      </Principal>
+      <Dependent Role="CourseTopicFiles">
+        <PropertyRef Name="FileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserTopic__Cours__39AD8A7F">
+    <End Role="CourseTopicFiles" Type="Self.CourseTopicFiles" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserTopicFilesDone" Type="Self.UserTopicFilesDone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseTopicFiles">
+        <PropertyRef Name="CourseTopicFileId" />
+      </Principal>
+      <Dependent Role="UserTopicFilesDone">
+        <PropertyRef Name="CourseTopicFileId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCours__Cours__34E8D562">
+    <End Role="CourseTopics" Type="Self.CourseTopics" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TestCourseTopics" Type="Self.TestCourseTopics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CourseTopics">
+        <PropertyRef Name="CourseTopicId" />
+      </Principal>
+      <Dependent Role="TestCourseTopics">
+        <PropertyRef Name="CourseTopicId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Files__FileTypeI__4336F4B9">
+    <End Role="FileTypes" Type="Self.FileTypes" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Files" Type="Self.Files" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="FileTypes">
+        <PropertyRef Name="FileTypeId" />
+      </Principal>
+      <Dependent Role="Files">
+        <PropertyRef Name="FileTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserGroup__Group__3F9B6DFF">
+    <End Role="Groups" Type="Self.Groups" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserGroups" Type="Self.UserGroups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Groups">
+        <PropertyRef Name="GroupId" />
+      </Principal>
+      <Dependent Role="UserGroups">
+        <PropertyRef Name="GroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserRoles__RoleI__370627FE">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="RoleId" />
+      </Principal>
+      <Dependent Role="UserRoles">
+        <PropertyRef Name="RoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Teachers__UserId__5E1FF51F">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Teachers" Type="Self.Teachers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Teachers">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestAnswe__TestI__07E124C1">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TestAnswers" Type="Self.TestAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="TestId" />
+      </Principal>
+      <Dependent Role="TestAnswers">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestAnswe__TestQ__5A4F643B">
+    <End Role="TestQuestions" Type="Self.TestQuestions" Multiplicity="0..1" />
+    <End Role="TestAnswers" Type="Self.TestAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TestQuestions">
+        <PropertyRef Name="TestQuestionId" />
+      </Principal>
+      <Dependent Role="TestAnswers">
+        <PropertyRef Name="TestQuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCorre__TestA__5090EFD7">
+    <End Role="TestAnswers" Type="Self.TestAnswers" Multiplicity="0..1" />
+    <End Role="TestCorrectAnswers" Type="Self.TestCorrectAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TestAnswers">
+        <PropertyRef Name="TestAnswerId" />
+      </Principal>
+      <Dependent Role="TestCorrectAnswers">
+        <PropertyRef Name="TestAnswerId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCorre__TestI__06ED0088">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TestCorrectAnswers" Type="Self.TestCorrectAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="TestId" />
+      </Principal>
+      <Dependent Role="TestCorrectAnswers">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCorre__TestQ__558AAF1E">
+    <End Role="TestQuestions" Type="Self.TestQuestions" Multiplicity="0..1" />
+    <End Role="TestCorrectAnswers" Type="Self.TestCorrectAnswers" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TestQuestions">
+        <PropertyRef Name="TestQuestionId" />
+      </Principal>
+      <Dependent Role="TestCorrectAnswers">
+        <PropertyRef Name="TestQuestionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestCours__TestI__08D548FA">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TestCourseTopics" Type="Self.TestCourseTopics" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="TestId" />
+      </Principal>
+      <Dependent Role="TestCourseTopics">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TestQuest__TestI__05F8DC4F">
+    <End Role="Tests" Type="Self.Tests" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="TestQuestions" Type="Self.TestQuestions" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tests">
+        <PropertyRef Name="TestId" />
+      </Principal>
+      <Dependent Role="TestQuestions">
+        <PropertyRef Name="TestId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserCours__UserI__4277DAAA">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserCourses" Type="Self.UserCourses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserCourses">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserGroup__UserI__3EA749C6">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserGroups" Type="Self.UserGroups" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserGroups">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserRoles__UserI__361203C5">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserRoles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__UserTopic__UserI__38B96646">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="UserTopicFilesDone" Type="Self.UserTopicFilesDone" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="UserTopicFilesDone">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="CourseGroups" EntityType="Self.CourseGroups" />
+    <EntitySet Name="Courses" EntityType="Self.Courses" />
+    <EntitySet Name="CourseTopicFiles" EntityType="Self.CourseTopicFiles" />
+    <EntitySet Name="CourseTopics" EntityType="Self.CourseTopics" />
+    <EntitySet Name="Files" EntityType="Self.Files" />
+    <EntitySet Name="FileTypes" EntityType="Self.FileTypes" />
+    <EntitySet Name="Groups" EntityType="Self.Groups" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" />
+    <EntitySet Name="Teachers" EntityType="Self.Teachers" />
+    <EntitySet Name="TestAnswers" EntityType="Self.TestAnswers" />
+    <EntitySet Name="TestCorrectAnswers" EntityType="Self.TestCorrectAnswers" />
+    <EntitySet Name="TestCourseTopics" EntityType="Self.TestCourseTopics" />
+    <EntitySet Name="TestQuestions" EntityType="Self.TestQuestions" />
+    <EntitySet Name="Tests" EntityType="Self.Tests" />
+    <EntitySet Name="UserCourses" EntityType="Self.UserCourses" />
+    <EntitySet Name="UserGroups" EntityType="Self.UserGroups" />
+    <EntitySet Name="UserRoles" EntityType="Self.UserRoles" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <EntitySet Name="UserTopicFilesDone" EntityType="Self.UserTopicFilesDone" />
+    <AssociationSet Name="FK__CourseGro__Cours__67A95F59" Association="Self.FK__CourseGro__Cours__67A95F59">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="CourseGroups" EntitySet="CourseGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CourseGro__Group__689D8392" Association="Self.FK__CourseGro__Group__689D8392">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="CourseGroups" EntitySet="CourseGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CourseTop__Cours__62E4AA3C" Association="Self.FK__CourseTop__Cours__62E4AA3C">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="CourseTopics" EntitySet="CourseTopics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CourseTop__Cours__71F1E3A2" Association="Self.FK__CourseTop__Cours__71F1E3A2">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="CourseTopicFiles" EntitySet="CourseTopicFiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Teachers__Course__2D47B39A" Association="Self.FK__Teachers__Course__2D47B39A">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="Teachers" EntitySet="Teachers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCours__Cours__5EDF0F2E" Association="Self.FK__TestCours__Cours__5EDF0F2E">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="TestCourseTopics" EntitySet="TestCourseTopics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserCours__Cours__436BFEE3" Association="Self.FK__UserCours__Cours__436BFEE3">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="UserCourses" EntitySet="UserCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserTopic__Cours__3AD6B8E2" Association="Self.FK__UserTopic__Cours__3AD6B8E2">
+      <End Role="Courses" EntitySet="Courses" />
+      <End Role="UserTopicFilesDone" EntitySet="UserTopicFilesDone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CourseTop__Cours__2C538F61" Association="Self.FK__CourseTop__Cours__2C538F61">
+      <End Role="CourseTopics" EntitySet="CourseTopics" />
+      <End Role="CourseTopicFiles" EntitySet="CourseTopicFiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CourseTop__FileI__442B18F2" Association="Self.FK__CourseTop__FileI__442B18F2">
+      <End Role="Files" EntitySet="Files" />
+      <End Role="CourseTopicFiles" EntitySet="CourseTopicFiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserTopic__Cours__39AD8A7F" Association="Self.FK__UserTopic__Cours__39AD8A7F">
+      <End Role="CourseTopicFiles" EntitySet="CourseTopicFiles" />
+      <End Role="UserTopicFilesDone" EntitySet="UserTopicFilesDone" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCours__Cours__34E8D562" Association="Self.FK__TestCours__Cours__34E8D562">
+      <End Role="CourseTopics" EntitySet="CourseTopics" />
+      <End Role="TestCourseTopics" EntitySet="TestCourseTopics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Files__FileTypeI__4336F4B9" Association="Self.FK__Files__FileTypeI__4336F4B9">
+      <End Role="FileTypes" EntitySet="FileTypes" />
+      <End Role="Files" EntitySet="Files" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserGroup__Group__3F9B6DFF" Association="Self.FK__UserGroup__Group__3F9B6DFF">
+      <End Role="Groups" EntitySet="Groups" />
+      <End Role="UserGroups" EntitySet="UserGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserRoles__RoleI__370627FE" Association="Self.FK__UserRoles__RoleI__370627FE">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="UserRoles" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Teachers__UserId__5E1FF51F" Association="Self.FK__Teachers__UserId__5E1FF51F">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Teachers" EntitySet="Teachers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestAnswe__TestI__07E124C1" Association="Self.FK__TestAnswe__TestI__07E124C1">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="TestAnswers" EntitySet="TestAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestAnswe__TestQ__5A4F643B" Association="Self.FK__TestAnswe__TestQ__5A4F643B">
+      <End Role="TestQuestions" EntitySet="TestQuestions" />
+      <End Role="TestAnswers" EntitySet="TestAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCorre__TestA__5090EFD7" Association="Self.FK__TestCorre__TestA__5090EFD7">
+      <End Role="TestAnswers" EntitySet="TestAnswers" />
+      <End Role="TestCorrectAnswers" EntitySet="TestCorrectAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCorre__TestI__06ED0088" Association="Self.FK__TestCorre__TestI__06ED0088">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="TestCorrectAnswers" EntitySet="TestCorrectAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCorre__TestQ__558AAF1E" Association="Self.FK__TestCorre__TestQ__558AAF1E">
+      <End Role="TestQuestions" EntitySet="TestQuestions" />
+      <End Role="TestCorrectAnswers" EntitySet="TestCorrectAnswers" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestCours__TestI__08D548FA" Association="Self.FK__TestCours__TestI__08D548FA">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="TestCourseTopics" EntitySet="TestCourseTopics" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TestQuest__TestI__05F8DC4F" Association="Self.FK__TestQuest__TestI__05F8DC4F">
+      <End Role="Tests" EntitySet="Tests" />
+      <End Role="TestQuestions" EntitySet="TestQuestions" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserCours__UserI__4277DAAA" Association="Self.FK__UserCours__UserI__4277DAAA">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserCourses" EntitySet="UserCourses" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserGroup__UserI__3EA749C6" Association="Self.FK__UserGroup__UserI__3EA749C6">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserGroups" EntitySet="UserGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserRoles__UserI__361203C5" Association="Self.FK__UserRoles__UserI__361203C5">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserRoles" EntitySet="UserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__UserTopic__UserI__38B96646" Association="Self.FK__UserTopic__UserI__38B96646">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="UserTopicFilesDone" EntitySet="UserTopicFilesDone" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

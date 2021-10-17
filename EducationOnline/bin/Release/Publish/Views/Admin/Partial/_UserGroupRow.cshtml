@@ -1,0 +1,22 @@
+﻿@model UserGroupVM
+
+<tr id="userGroupRow@(Model.Id)">
+    <td>
+        @Model.User.Email
+    </td>
+    <td>
+        @Model.User.LastName
+    </td>
+    <td>
+        @Model.User.FirstName
+    </td>
+    <td>
+        @(Model.Group?.Name)
+    </td>
+    <td>
+        <div class="btnBox">
+            @Ajax.ActionLink("Редактировать группу", "EditUserGroup", new { Id = Model.Id, GroupId = Model.Group?.Id, UserId = Model.User.Id }, new AjaxOptions { UpdateTargetId = $"userGroupRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @Ajax.ActionLink("Удалить из группы", "DeleteUserGroup", new { Model.Id }, new AjaxOptions { UpdateTargetId = $"userGroupRow{Model.Id}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn red" })
+        </div>
+    </td>
+</tr>

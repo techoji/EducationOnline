@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Group>
+
+<div class="tableContainer">
+    <table>
+        <tr>
+            <th>
+                Группа
+            </th>
+            <th>
+                Управление
+            </th>
+        </tr>
+
+        @foreach (Group group in Model) {
+            @Html.Partial("Partial/_GroupRow", group)
+        }
+    </table>
+</div>

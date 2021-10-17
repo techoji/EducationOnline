@@ -1,0 +1,39 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация | Distance Learning";
+}
+@Styles.Render("~/form")
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="active-nav basic" href="/account/register">Регистрация</a>
+</p>
+<div class="centerContainer">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal" })) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-inputs">
+            <div class="form-block">
+                <p>Обязательно для заполнения</p>
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Имя" })
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Фамилия" })
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Почта" })
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Подтверждение пароля" })
+            </div>
+            <div class="form-block">
+                <p>Если студент</p>
+                @Html.TextBoxFor(m => m.StudentCard, new { @class = "form-control", placeholder = "Студенческий билет" })
+            </div>
+            <input type="submit" class="active" value="Регистрация" />
+        </div>
+    }
+    <div class="form-addition">
+        <p>
+            @Html.ActionLink("Уже есть аккаунт?", "Login")
+        </p>
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,24 @@
+﻿.tableContainer {
+    border: 5px solid white;
+    max-height: 78vh;
+    overflow: auto;
+    width: 100%;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: white;
+}
+
+th {
+    color: #426FC5;
+    background-color: #F5F8FF;
+}
+
+th, td {
+    padding: 20px;
+    min-width: 170px;
+    text-align: left;
+    border-bottom: 1px solid lightgray;
+}

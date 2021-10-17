@@ -1,0 +1,326 @@
+﻿@model CourseVM
+
+@{
+    User user = ViewBag.User;
+    List<CourseTopicFileVM> files = (ViewBag.CourseTopicFiles as List<CourseTopicFileVM>).ToList();
+    List<TestCourseTopicVM> tests = ViewBag.TestsCourseTopic;
+
+    List<CourseTopicVM> courseTopics = ViewBag.CourseTopics;
+    List<UserTopicFileDoneVM> userTopicFilesDone = ViewBag.UserTopicFilesDone;
+    List<UserTestVM> userTests = ViewBag.UserTests;
+    List<UserCourseFileVM> userCourseFiles = ViewBag.UserCourseFiles;
+
+    int ColorHue = ViewBag.UserCourseColor;
+    String lightColor = $"hsl({ColorHue}, 100%, 98.5%)";
+    String darkedColor = $"hsl({ColorHue}, 53%, 52%)";
+    bool IsTeacher = (bool)TempData["IsTeacher"];
+    bool IsEdit = (bool)TempData["IsEdit"];
+
+    List<FileType> fileTypes = Session["FileTypes"] as List<FileType> ?? new List<FileType>();
+    IEnumerable<DistanceLearning.Models.File> allFiles = null;
+    object message = Session["Message"];
+}
+
+<h2 style="color: @(darkedColor); border-left-color: @(darkedColor);">@Model.Name@(String.IsNullOrWhiteSpace(Model.ShortName) ? "" : $" ({Model.ShortName})")</h2>
+<div class="courseBox">
+    @if (IsTeacher && IsEdit) {
+        using (DbManager db = new DbManager()) {
+            allFiles = db.GetFilesByCourseId(Model.Id);
+        }
+        <div class="teacherContainer" style="border-color: @(darkedColor)">
+            <h4 style="color: @(darkedColor); background-color: @(lightColor)"><span class="iconBox courseControl">settings</span>Управление курсом</h4>
+            @if (message != null && message is String) {
+                <h4 class="tempNotify">@message</h4>
+                Session["Message"] = null;
+            }
+            <div class="teacherSettings">
+                <div class="settingBlock">
+                    <p>Загрузка файла</p>
+                    <span id="LoadingFileUpload">Загрузка файла...</span>
+                    @using (Ajax.BeginForm("UploadFiles", "Pages", null, new AjaxOptions { OnBegin = "UploadStart", Confirm = $"Загрузить файл?", HttpMethod = "POST", UpdateTargetId = "CourseContainer", LoadingElementId = "LoadingFileUpload", LoadingElementDuration = 200 }, new { id = "UploadFileForm", enctype = "multipart/form-data" })) {
+                        <input type="text" name="Course" value="@Model.ShortName" hidden />
+                        <input type="text" name="CourseId" value="@Model.Id" hidden />
+                        <div class="inputBlock">
+                            <p>Тип файла</p>
+                            <select name="FileType" id="FileType">
+                                @foreach (FileType fileType in fileTypes) {
+                                    <option value="@fileType.FileTypeId">@fileType.Description</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="inputFileBlock">
+                            <input maxlength="200000000" type="file" name="File" id="FileUploadBtn" hidden />
+                            <input type="button" value="Выбрать файл" id="UploadFileBtn" />
+                            <p id="UploadFileText">Файл не выбран</p>
+                        </div>
+                        <div class="inputFileBlock" id="ExcelUploadBlock">
+                            <input type="file" accept=".xls,.xlsx" name="AttachedFile" id="ExcelFileUploadBtn" hidden />
+                            <input type="button" value="Выбрать Excel-файл" id="UploadExcelFileBtn" />
+                            <p id="UploadExcelFileText">Excel-файл не выбран</p>
+                        </div>
+                        <input type="text" name="FileName" placeholder="Название файла" required />
+                        <div class="inputBlock">
+                            <p>Срок сдачи</p>
+                            <input type="datetime-local" name="ClosingIn" value="" />
+                        </div>
+                        <input type="submit" value="Загрузить" class="btn" id="UploadFileSubmit" />
+                    }
+                </div>
+                <div class="settingBlock badAction">
+                    <p>Удалить файл</p>
+                    @using (Ajax.BeginForm("DeleteFile", "Pages", new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Удалить файл из курса?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" })) {
+                        <div class="inputBlock">
+                            <p>Имя файла</p>
+                            <select name="FileId">
+                                @foreach (DistanceLearning.Models.File file in allFiles) {
+                                    <option value="@file.FileId">@file.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <input type="text" name="CourseId" value="@Model.Id" hidden />
+                        <input type="submit" value="Удалить" class="btn red" />
+                    }
+                </div>
+                <div class="settingBlock">
+                    <p>Добавить главу</p>
+                    @using (Ajax.BeginForm("AddTopic", "Pages", new AjaxOptions { Confirm = $"Добавить новую главу?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" })) {
+                        <input type="text" name="SectionName" placeholder="Название главы" required />
+                        <input type="text" name="Topic" placeholder="Название темы" />
+                        <input type="text" name="Description" placeholder="Описание" />
+                        <div class="inputBlock">
+                            <select name="IsHidden">
+                                <option value="false">Видно всем</option>
+                                <option value="true">Скрыто</option>
+                            </select>
+                        </div>
+                        <input type="text" name="CourseId" value="@Model.Id" hidden />
+                        <input type="submit" value="Добавить" class="btn" />
+                    }
+                </div>
+                <div class="settingBlock badAction">
+                    <p>Удалить главу</p>
+                    @using (Ajax.BeginForm("DeleteCourseTopic", "Pages", new AjaxOptions { Confirm = $"Удалить главу?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" })) {
+                        <div class="inputBlock">
+                            <p>Имя главы</p>
+                            <select name="CourseTopicId">
+                                @foreach (CourseTopicVM courseTopic in courseTopics) {
+                                    <option value="@courseTopic.Id">@courseTopic.SectionName</option>
+                                }
+                            </select>
+                        </div>
+                        <input type="text" name="CourseId" value="@Model.Id" hidden />
+                        <input type="submit" value="Удалить" class="btn red" />
+                    }
+                </div>
+                <div class="settingBlock">
+                    <p>Выложить файл(ы) в курс</p>
+                    @using (Ajax.BeginForm("UploadFileToTheCourseTopic", "Pages", new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Выложить файл(ы)?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" })) {
+                        <input type="text" name="CourseId" value="@Model.Id" hidden />
+                        <div class="settingInputs">
+                            <select name="CourseTopicId">
+                                <option value="null">Выложить в курс</option>
+                                @foreach (CourseTopicVM courseTopic in courseTopics) {
+                                    <option value="@courseTopic.Id">@courseTopic.SectionName</option>
+                                }
+                            </select>
+                            <select name="IsRandom" id="IsRandom">
+                                <option value="false">Выложить для всех</option>
+                                <option value="true">Раздать случайно</option>
+                            </select>
+                            <input type="text" name="Name" placeholder="Название" id="CourseTopicFileName" hidden />
+                            <input type="submit" value="Выложить файл(ы)" class="btn" />
+                        </div>
+                        <div class="fileContainer" id="FileContainerTopic" data-course="@Model.Id">
+                        </div>
+                        <select name="FileType" id="TypeSort">
+                            <option value="0">Все файлы</option>
+                            @foreach (FileType fileType in fileTypes) {
+                                <option value="@fileType.FileTypeId">@fileType.Description</option>
+                            }
+                        </select>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    @if (files.Any(c => c.CourseTopicId == null)) {
+        <div class="topic-content">
+            <div class="topic-files" data-colorHue="@ColorHue">
+                <ul>
+                    @foreach (CourseTopicFileVM courseTopicFile in files.Where(c => c.CourseTopicId == null)) {
+                        IEnumerable<UserCourseFileVM> userCourseFilesTopic = userCourseFiles.Where(u => u.UserId == user.UserId && u.CourseTopicFileId == courseTopicFile.Id && courseTopicFile.IsVariant);
+                        FileVM file;
+                        String fileType;
+                        int? courseTopicFileId;
+                        int? courseTopicId;
+                        if (userCourseFilesTopic.Count() > 0) {
+                            foreach (UserCourseFileVM userCourseFile in userCourseFilesTopic) {
+                                file = userCourseFile.GetFile();
+                                fileType = file.GetFileType().Name.ToLower();
+                                courseTopicFileId = userCourseFile.CourseTopicFileId;
+                                courseTopicId = userCourseFile.CourseTopicId;
+                                <li data-file="@file.Id" data-fileType="@fileType" data-courseTopicFile="@courseTopicFile.Id">
+                                    @if (fileType == "labtools") {
+                                        @Html.ActionLink(courseTopicFile.Name, "LabTools", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                    }
+                                    else if (fileType == "labzoom") {
+                                        @Html.ActionLink(courseTopicFile.Name, "LabZoom", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                    }
+                                    else {
+                                        <a href="" class="linkbtn icon @(fileType)">@file.Name</a>
+                                    }
+                                    <div class="courseFileTools">
+                                        <input class="fileCheckbox" data-fileId="@file.Id" data-courseId="@Model.Id" data-courseTopicFileId="@courseTopicFileId" type="checkbox" @(userTopicFilesDone.Any(u => u.CourseTopicFileId == courseTopicFileId) ? "checked" : "") />
+                                        @if (IsTeacher) {
+                                            @Html.ActionLink("auto_awesome_motion", "TaskFiles", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = "iconBox attFiles", title = "Файлы задания" })
+                                            @Html.ActionLink("content_paste", "Statistics", new { courseTopicFileId }, new { @class = "iconBox stat", title = "Статистика" })
+                                            if (IsEdit) {
+                                                @Ajax.ActionLink("delete", "DeleteFileFromCourseTopic", new { CourseId = Model.Id, CourseTopicFileId = courseTopicFile.Id }, new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Удалить '{file.Name}' из корня курса?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" }, new { title = "Удалить", @class = "iconBox delete" })
+                                            }
+                                        }
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else if (courseTopicFile.FileId != null) {
+                            file = courseTopicFile.GetFile();
+                            fileType = file.GetFileType().Name.ToLower();
+                            courseTopicFileId = courseTopicFile.Id;
+                            courseTopicId = courseTopicFile.CourseTopicId;
+                            <li data-file="@file.Id" data-fileType="@fileType" data-courseTopicFile="@courseTopicFile.Id">
+                                @if (fileType == "labtools") {
+                                    @Html.ActionLink(IsTeacher ? courseTopicFile.IsVariant ? file.Name + " (Задание по вариантам)" : file.Name : file.Name, "LabTools", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                }
+                                else if (fileType == "labzoom") {
+                                    @Html.ActionLink(IsTeacher ? courseTopicFile.IsVariant ? file.Name + " (Задание по вариантам)" : file.Name : file.Name, "LabZoom", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                }
+                                else {
+                                    <a href="" class="linkbtn icon @(fileType)">@file.Name</a>
+                                }
+                                <div class="courseFileTools">
+                                    <input class="fileCheckbox" data-fileId="@file.Id" data-courseId="@Model.Id" data-courseTopicFileId="@courseTopicFileId" type="checkbox" @(userTopicFilesDone.Any(u => u.CourseTopicFileId == courseTopicFileId) ? "checked" : "") />
+                                    @if (IsTeacher) {
+                                        @Html.ActionLink("content_paste", "Statistics", new { courseTopicFileId }, new { @class = "iconBox stat", title = "Статистика" })
+                                        if (IsEdit) {
+                                            @Ajax.ActionLink("delete", "DeleteFileFromCourseTopic", new { CourseId = Model.Id, CourseTopicFileId = courseTopicFile.Id }, new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Удалить '{file.Name}' из корня курса?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" }, new { title = "Удалить", @class = "iconBox delete" })
+                                        }
+                                    }
+                                </div>
+                            </li>
+                        }
+                    }
+                    @foreach (TestCourseTopicVM testCourseTopic in tests.Where(c => c.CourseTopicId == null)) {
+                        TestVM test = testCourseTopic.GetTest();
+                        <li>
+                            <a href="/pages/test/@(test.Id)" class="linkbtn icon test">@test.Name</a>
+                            <input class="testCheckbox" data-testId="@testCourseTopic.TestId" data-courseId="@Model.Id" data-testCourseTopicId="@testCourseTopic.Id" type="checkbox" @(userTests.Any(u => u.TestCourseTopicId == testCourseTopic.Id && u.IsChecked) ? "checked" : "") />
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    @if (courseTopics.Count > 0) {
+        foreach (CourseTopicVM topic in courseTopics) {
+            if (!topic.IsHidden || IsTeacher) {
+                <div class="topic">
+                    <div class="sectionName" style="color: @(darkedColor);">
+                        <h2>@topic.SectionName</h2>
+                        @if (IsTeacher && IsEdit) {
+                            <div class="topicBox">
+                                @Ajax.ActionLink(topic.IsHidden ? "visibility_off" : "visibility", "UpdateCourseTopicVisibility", new { CourseTopicId = topic.Id, CourseId = topic.CourseId }, new AjaxOptions { UpdateTargetId = $"TopicVisibility{topic.Id}", HttpMethod = "Post" }, new { @class = "iconBox view", id = $"TopicVisibility{topic.Id}", title = "Видимость темы" })
+                            </div>
+                        }
+                    </div>
+                    <div class="topic-content">
+                        @if (!(String.IsNullOrWhiteSpace(topic.Topic) && String.IsNullOrWhiteSpace(topic.Description))) {
+                            <div class="topic-description">
+                                <h4>@topic.Topic</h4>
+                                @if (!String.IsNullOrWhiteSpace(topic.Description)) {
+                                    <p>@topic.Description</p>
+                                }
+                            </div>
+                        }
+                        <div class="topic-files" data-colorHue="@ColorHue">
+                            <ul>
+                                @foreach (CourseTopicFileVM courseTopicFile in files.Where(c => c.CourseTopicId != null && topic.Id == c.CourseTopicId)) {
+                                    IEnumerable<UserCourseFileVM> userCourseFilesTopic = userCourseFiles.Where(u => u.UserId == user.UserId && u.CourseTopicFileId == courseTopicFile.Id && courseTopicFile.IsVariant);
+                                    FileVM file;
+                                    String fileType;
+                                    int? courseTopicFileId;
+                                    int? courseTopicId;
+                                    if (userCourseFilesTopic.Count() > 0) {
+                                        foreach (UserCourseFileVM userCourseFile in userCourseFilesTopic) {
+                                            file = userCourseFile.GetFile();
+                                            fileType = file.GetFileType().Name.ToLower();
+                                            courseTopicFileId = userCourseFile.CourseTopicFileId;
+                                            courseTopicId = userCourseFile.CourseTopicId;
+                                            <li data-file="@file.Id" data-fileType="@fileType" data-courseTopicFile="@courseTopicFile.Id">
+                                                @if (fileType == "labtools") {
+                                                    @Html.ActionLink(courseTopicFile.Name, "LabTools", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                                }
+                                                else if (fileType == "labzoom") {
+                                                    @Html.ActionLink(courseTopicFile.Name, "LabZoom", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                                }
+                                                else {
+                                                    <a href="" class="linkbtn icon @(fileType)">@file.Name</a>
+                                                }
+                                                <div class="courseFileTools">
+                                                    <input class="fileCheckbox" data-fileId="@file.Id" data-courseId="@Model.Id" data-courseTopicFileId="@courseTopicFileId" type="checkbox" @(userTopicFilesDone.Any(u => u.CourseTopicFileId == courseTopicFileId) ? "checked" : "") />
+                                                    @if (IsTeacher) {
+                                                        @Html.ActionLink("auto_awesome_motion", "TaskFiles", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = "iconBox attFiles", title = "Файлы задания" })
+                                                        @Html.ActionLink("content_paste", "Statistics", new { courseTopicFileId }, new { @class = "iconBox stat", title = "Статистика" })
+                                                        if (IsEdit) {
+                                                            @Ajax.ActionLink("delete", "DeleteFileFromCourseTopic", new { CourseId = Model.Id, CourseTopicFileId = courseTopicFile.Id }, new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Удалить '{file.Name}' из главы '{topic.SectionName}'?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" }, new { title = "Удалить", @class = "iconBox delete" })
+                                                        }
+                                                    }
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                    else if (courseTopicFile.FileId != null) {
+                                        file = courseTopicFile.GetFile();
+                                        fileType = file.GetFileType().Name.ToLower();
+                                        courseTopicFileId = courseTopicFile.Id;
+                                        courseTopicId = courseTopicFile.CourseTopicId;
+                                        <li data-file="@file.Id" data-fileType="@fileType" data-courseTopicFile="@courseTopicFile.Id">
+                                            @if (fileType == "labtools") {
+                                                @Html.ActionLink(IsTeacher ? courseTopicFile.IsVariant ? file.Name + " (Задание по вариантам)" : file.Name : file.Name, "LabTools", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                            }
+                                            else if (fileType == "labzoom") {
+                                                @Html.ActionLink(IsTeacher ? courseTopicFile.IsVariant ? file.Name + " (Задание по вариантам)" : file.Name : file.Name, "LabZoom", "lab", new { CourseTopicFileId = courseTopicFile.Id }, new { @class = $"linkbtn icon {fileType}" })
+                                            }
+                                            else {
+                                                <a href="" class="linkbtn icon @(fileType)">@file.Name</a>
+                                            }
+                                            <div class="courseFileTools">
+                                                <input class="fileCheckbox" data-fileId="@file.Id" data-courseId="@Model.Id" data-courseTopicFileId="@courseTopicFileId" type="checkbox" @(userTopicFilesDone.Any(u => u.CourseTopicFileId == courseTopicFileId) ? "checked" : "") />
+                                                @if (IsTeacher) {
+                                                    @Html.ActionLink("content_paste", "Statistics", new { courseTopicFileId }, new { @class = "iconBox stat", title = "Статистика" })
+                                                    if (IsEdit) {
+                                                        @Ajax.ActionLink("delete", "DeleteFileFromCourseTopic", new { CourseId = Model.Id, CourseTopicFileId = courseTopicFile.Id }, new AjaxOptions { OnSuccess = "UpdateEvents", Confirm = $"Удалить '{file.Name}' из главы '{topic.SectionName}'?", HttpMethod = "POST", UpdateTargetId = "CourseContainer" }, new { title = "Удалить", @class = "iconBox delete" })
+                                                    }
+                                                }
+                                            </div>
+                                        </li>
+                                    }
+                                }
+                                @foreach (TestCourseTopicVM testCourseTopic in tests.Where(c => c.CourseTopicId != null && topic.Id == c.CourseTopicId)) {
+                                    TestVM test = testCourseTopic.GetTest();
+                                    <li>
+                                        <a href="/pages/test/@(test.Id)" class="linkbtn icon test">@test.Name</a>
+                                        <input class="testCheckbox" data-testId="@testCourseTopic.TestId" data-courseId="@Model.Id" data-testCourseTopicId="@testCourseTopic.Id" type="checkbox" @(userTests.Any(u => u.TestCourseTopicId == testCourseTopic.Id && u.IsChecked) ? "checked" : "") />
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+
+                    </div>
+
+                </div>
+            }
+        }
+    }
+</div>
+
+@Scripts.Render("~/js/CourseTopic")

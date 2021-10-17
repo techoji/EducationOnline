@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Course>
+
+<div class="tableContainer">
+    <table>
+        <tr>
+            <th>
+                Название курса
+            </th>
+            <th>
+                Аббревиатура курса
+            </th>
+            <th>
+                Группы
+            </th>
+            <th>
+                Управление
+            </th>
+        </tr>
+
+        @foreach (Course course in Model) {
+            @Html.Partial("Partial/_CourseRow", course)
+        }
+    </table>
+</div>

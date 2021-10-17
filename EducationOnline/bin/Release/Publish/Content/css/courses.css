@@ -1,0 +1,696 @@
+﻿.courseContainer {
+    overflow: hidden;
+    padding: 50px 20px;
+    background-color: rgba(255, 255, 255, .5);
+    border-bottom: 5px solid white;
+    margin-bottom: 50px;
+}
+
+    .courseContainer > h2 {
+        padding: 20px 30px;
+        background-color: white;
+        border-left: 2px solid transparent;
+    }
+
+.courseBox {
+    background-color: rgba(255, 255, 255, .5);
+    padding: 50px 20px;
+    border-bottom: 5px solid white;
+}
+
+.courses {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, .5);
+    border-bottom: 5px solid white;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+    .courses > h4 {
+        text-align: center;
+        color: #426FC5;
+        padding: 10px 0;
+    }
+
+    .courses .courseYearBox {
+        position: relative;
+    }
+
+        .courses .courseYearBox:not(:first-child) {
+            margin-top: 100px;
+        }
+
+        .courses .courseYearBox > h4.courseYear {
+            position: absolute;
+            top: -30px;
+            padding: 10px;
+            border-left: 2px solid #426FC5;
+        }
+
+    .courses .subject img {
+        width: 100%;
+    }
+
+    .courses .subjects {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+    }
+
+    .courses .subject {
+        display: flex;
+        position: relative;
+        flex-basis: calc(33% - 17px);
+        max-width: 500px;
+        min-width: 300px;
+        background-color: white;
+        border: 1px solid #EBEBEB;
+        border-radius: 20px;
+        padding: 20px;
+        margin: 10px;
+        box-sizing: border-box;
+        transition: .1s;
+    }
+
+        .courses .subject.old {
+            opacity: .5;
+        }
+
+        .courses .subject figure {
+            display: flex;
+            width: 100%;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .courses .subject:last-child {
+            flex-grow: 0;
+        }
+
+        .courses .subject:hover {
+            box-shadow: 0 0 10px #F0F0F0;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .courses .subject .imgBox {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 80px;
+            overflow: hidden;
+            background-color: hsl(0,100%,98%);
+            border-radius: 20px;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+            .courses .subject .imgBox img {
+                height: 100%;
+                width: auto;
+            }
+
+        .courses .subject figcaption {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+            .courses .subject figcaption .subName h4 {
+                text-align: center;
+                margin-bottom: 20px;
+                border-radius: 10px;
+                padding: 10px 0;
+                transition: .2s;
+            }
+
+            .courses .subject figcaption .subName p {
+                margin-top: 10px;
+                margin-left: 22px;
+                font-size: .9rem;
+            }
+
+            .courses .subject figcaption .course-groups {
+                margin: 20px 0;
+            }
+
+.topic {
+    border: 1px solid #EBEBEB;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+    .topic:not(:first-child) {
+        margin-top: 50px;
+    }
+
+.topic-content {
+    padding: 20px;
+    background-color: white;
+}
+
+.topic-description {
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #EBEBEB;
+}
+
+    .topic-description h4 {
+        margin-left: 10px;
+    }
+
+    .topic-description p {
+        margin-top: 10px;
+        margin-left: 20px;
+    }
+
+
+.topic .sectionName {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background-color: white;
+    border-bottom: 1px solid #EBEBEB;
+}
+
+.topic .topicBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.topic-content .iconBox,
+.topic .iconBox {
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .1);
+    border-bottom: 1px solid lightgray;
+    transition: .2s;
+}
+
+.topic .topicBox > *:not(:first-child) {
+    margin-left: 20px;
+}
+
+.topic .topicBox > *,
+.topic .sectionName h4 {
+    padding: 10px;
+}
+
+.topic .sectionName .iconBox {
+    font-size: 1.2rem;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.topic-files ul {
+    list-style: none;
+}
+
+    .topic-files ul li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        margin: 20px 0;
+        margin-left: 50px;
+        padding-left: 10px;
+        padding-bottom: 10px;
+        padding-right: 20px;
+        border-bottom: 1px dashed #EBEBEB;
+    }
+
+        .topic-files ul li a {
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+
+            .topic-files ul li a:before {
+                position: absolute;
+                top: -8px;
+                left: -50px;
+            }
+
+.courseFileTools {
+    display: flex;
+    align-items: center;
+}
+
+    .courseFileTools > * {
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+        .courseFileTools > *:not(:first-child) {
+            margin-left: 25px;
+        }
+
+.donePercent {
+    border-bottom: 5px dotted transparent;
+    height: 20px;
+    width: 100%;
+    margin: 20px 20px 15px 0;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.percentScale {
+    position: absolute;
+    top: 15px;
+    display: block;
+    height: 5px;
+    background-color: #426FC5;
+}
+
+.percents {
+    position: absolute;
+    bottom: -30px;
+    width: 100%;
+    left: -22px;
+    text-align: center;
+    color: gray;
+}
+
+/*teacher*/
+.teacherContainer {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    border: 2px dashed transparent;
+}
+
+    .teacherContainer .tempNotify {
+        border-left: 2px solid #44C559;
+        padding: 20px;
+        margin: 20px;
+        color: #44C559;
+        background-color: #F0FFF2;
+    }
+
+    .teacherContainer h4:first-child {
+        display: flex;
+        align-items: center;
+        font-size: 1.2rem;
+        padding: 20px;
+    }
+
+    .teacherContainer > h4 > span {
+        margin-right: 10px;
+    }
+
+.teacherSettings {
+    display: flex;
+    align-items: stretch;
+    flex-wrap: wrap;
+    background-color: white;
+    padding: 20px;
+}
+
+.settingBlock {
+    display: flex;
+    flex-grow: 1;
+    flex-basis: 400px;
+    flex-direction: column;
+    border: 1px solid #EBEBEB;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px;
+    background-color: white;
+    position: relative;
+}
+
+    .settingBlock #LoadingFileUpload {
+        position: absolute;
+        letter-spacing: 2px;
+        font-weight: bold;
+        vertical-align: middle;
+        line-height: 500px;
+        display: none;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255,255,255, .9);
+    }
+
+    .settingBlock > p {
+        padding: 20px;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #EBEBEB;
+        color: #426FC5;
+    }
+
+    .settingBlock.badAction > p {
+        color: #C54242;
+    }
+
+    .settingBlock form > input[type="text"] {
+        border-radius: 0;
+    }
+
+.uploadFile {
+    display: flex;
+}
+
+/*inputs*/
+.settingBlock form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 20px;
+    height: 100%;
+    border: 1px dashed #EBEBEB;
+}
+
+.inputBlock {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #EBEBEB;
+    width: 100%;
+}
+
+    .inputBlock > * {
+        margin: 0 5px;
+    }
+
+.inputFileBlock {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid #EBEBEB;
+}
+
+    .inputFileBlock p {
+        font-size: .8rem;
+    }
+
+    .inputFileBlock input {
+        cursor: pointer;
+    }
+
+.teacherContainer .settingBlock input {
+    outline: none;
+}
+
+.settingBlock form > input[type=submit] {
+    width: auto;
+    padding: 10px 20px;
+    margin: 40px 0;
+    cursor: pointer;
+}
+
+.inputFileBlock {
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.settingBlock form > input[type=text] {
+    padding: 20px;
+    border: none;
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    border-bottom: 1px solid #EBEBEB;
+    text-align: center;
+}
+
+.settingBlock form input[type=button] {
+    width: 100%;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+}
+
+    .settingBlock form input[type=button]:hover {
+        text-decoration: underline;
+    }
+
+.settingInputs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    margin-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 20px;
+    border-bottom: 1px solid #EBEBEB;
+    width: 100%;
+}
+
+    .settingInputs > * {
+        margin: 5px;
+        border-radius: 10px;
+        width: auto !important;
+    }
+
+.uploadFile {
+    padding-bottom: 20px;
+}
+
+    .uploadFile input[type=submit] {
+        padding: 10px 15px;
+        outline: none;
+        cursor: pointer;
+        margin-top: 20px;
+    }
+
+.fileContainer {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    max-height: 500px;
+    overflow: auto;
+    margin: 20px 0;
+    padding-left: 20px;
+}
+
+    .fileContainer label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        border: 1px solid #E6E6E6;
+        cursor: pointer;
+        margin: 5px;
+        transition: .2s;
+        opacity: .8;
+        flex-basis: 170px;
+    }
+
+        .fileContainer label.selected {
+            background-color: #F5F8FF;
+            border-color: #426FC5;
+            opacity: 1;
+        }
+
+        .fileContainer label:hover {
+            background-color: #F5F8FF;
+        }
+
+        .fileContainer label span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .fileContainer label input {
+            margin-right: 10px;
+        }
+
+        .fileContainer label img {
+            max-width: 170px;
+            border-radius: 10px;
+        }
+
+a.filePreview {
+    color: #426FC5;
+    font-size: 1.2rem;
+    padding: 0 5px;
+    border-radius: 5px;
+    margin-left: 20px;
+    opacity: .5;
+    text-decoration: none !important;
+    transition: .1s;
+}
+
+.filePreview:hover {
+    opacity: 1;
+}
+
+.filePreview:hover {
+    text-decoration: underline;
+}
+
+select {
+    padding: 10px 15px !important;
+    outline: none;
+}
+
+#TypeSort {
+    margin-bottom: 20px;
+}
+
+/*popup fiel upload*/
+#PopupUpload {
+    display: none;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, .4);
+    z-index: 5;
+}
+
+.popupName {
+    display: flex;
+    align-items: center;
+    color: #426FC5;
+}
+
+    .popupName span {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+#PopupUpload .popupLoading {
+    display: flex;
+    background-color: #F0F0F0;
+    margin-top: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#PopupUpload #LoadingPercent {
+    background-color: #4459C5;
+    border-radius: 5px;
+    padding: 3px 0;
+    transition: .5s;
+}
+
+#PopupUpload #LoadingPercentText {
+    margin-top: 5px;
+    font-size: .9rem;
+    text-align: center;
+}
+
+/*icons*/
+.topic-files ul li a:before {
+    top: 2px;
+}
+
+.topic-files ul li:before {
+    top: 3px;
+    left: -50px;
+}
+
+.topic-files ul li a.test:before {
+    content: 'assignment';
+    color: #42C553;
+}
+
+.topic-files ul li a.test:hover:before {
+    background-color: #F0FFF2;
+}
+
+.topic-files ul li a.link:before {
+    content: 'link';
+    color: #C54281;
+}
+
+.topic-files ul li a.link:hover:before {
+    background-color: #FFF5FA;
+}
+
+.topic-files ul li a.download:before {
+    content: 'vertical_align_bottom';
+    color: #8842C5;
+}
+
+.topic-files ul li a.download:hover:before {
+    background-color: #FAF5FF;
+}
+
+.topic-files ul li a.labtools:before {
+    content: 'biotech';
+    color: #4286C5;
+}
+
+.topic-files ul li a.labtools:hover:before {
+    background-color: #F5FAFF;
+}
+
+.topic-files ul li a.labzoom:before {
+    content: 'center_focus_strong';
+    color: #4286C5;
+}
+
+.topic-files ul li a.labzoom:hover:before {
+    background-color: #F5FAFF;
+}
+
+.topic-files ul li.upload:before {
+    content: 'attach_file';
+    color: #5142C5;
+}
+
+.topic-files ul li.upload:hover:before {
+    background-color: #F6F5FF;
+}
+
+.courses figcaption :before {
+    top: -6px;
+}
+
+.courses figcaption .course-name:before {
+    content: 'book';
+}
+
+.courses figcaption .course-group:before {
+    content: 'group';
+}
+
+.courses figcaption .course-year:before {
+    content: 'today';
+}
+
+.topic .sectionName .iconBox {
+    color: #4258C5;
+    transition: .2s;
+}
+
+    .topic .sectionName .iconBox:hover {
+        background-color: #F5F7FF;
+    }
+
+.courseFileTools .iconBox.delete {
+    color: #C54444;
+}
+
+    .courseFileTools .iconBox.delete:hover {
+        background-color: #FFF5F5;
+    }
+
+.courseFileTools .iconBox.stat,
+.courseFileTools .iconBox.attFiles {
+    color: #4258C5;
+}
+
+    .courseFileTools .iconBox.stat:hover,
+    .courseFileTools .iconBox.attFiles:hover {
+        background-color: #F5F7FF;
+    }

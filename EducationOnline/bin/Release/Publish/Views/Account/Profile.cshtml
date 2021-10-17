@@ -1,0 +1,48 @@
+﻿@model User
+@Styles.Render("~/profile")
+@{
+    ViewBag.Title = $"{Model.LastName} {Model.FirstName} - Профиль";
+    List<Group> groups = ViewBag.Groups;
+    List<Course> courses = ViewBag.Courses;
+    List<Role> roles = ViewBag.Roles;
+}
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="active-nav basic" href="/account/profile">Профиль</a>
+</p>
+
+<div class="profileContainer">
+    <div class="userPreview profileCard">
+        <img src="@Model.Photo" alt="Alternate Text" />
+        <h2>@Model.LastName @Model.FirstName</h2>
+        <p>@Model.Email</p>
+        <div class="roles">
+            @foreach (Role role in roles.OrderBy(r => r.Description)) {
+                <p>@role.Description</p>
+            }
+        </div>
+    </div>
+    @if (groups.Count > 0) {
+        <div class="userPreview profileCard">
+            <h4>Групп@(groups.Count > 1 ? "ы" : "а")</h4>
+            <div class="groups">
+                @foreach (Group group in groups) {
+                    <p>@group.Name</p>
+                }
+            </div>
+        </div>
+    }
+    @if (courses.Count > 0) {
+        <div class="userPreview profileCard">
+            <h4>Курс@(courses.Count > 1 ? "ы" : "")</h4>
+            <div class="courses">
+                @foreach (Course course in courses.Distinct()) {
+                    <a href="/pages/course/@course.CourseId">@course.Name</a>
+                }
+            </div>
+        </div>
+    }
+</div>
+

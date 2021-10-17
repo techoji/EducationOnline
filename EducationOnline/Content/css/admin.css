@@ -1,0 +1,129 @@
+﻿.manageContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    background-color: rgba(255, 255, 255, .5);
+    padding: 20px;
+    box-sizing: border-box;
+    border-bottom: 5px solid white;
+}
+
+#Add {
+    display: none;
+}
+
+.tableInfo {
+    margin-top: 20px;
+}
+
+/*form*/
+.btnBox {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+    .btnBox .btn {
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+.addContainer {
+    background-color: white;
+    padding: 20px;
+}
+
+.addBox {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 2px dashed #426FC5;
+    position: relative;
+    border-radius: 10px;
+}
+
+    .addBox > p:first-child {
+        background-color: white;
+        color: #426FC5;
+        font-weight: bold;
+        padding: 20px 10px;
+        padding-top: 10px;
+        border-radius: 20px;
+        width: 100%;
+        text-align: center;
+        box-sizing: border-box;
+    }
+
+    .addBox select,
+    .addBox input {
+        width: 100%;
+        margin: 5px;
+        box-sizing: border-box;
+    }
+
+    .addBox .btnBox {
+        border-top: 1px solid #E6E6E6;
+        padding-top: 20px;
+        margin-top: 20px;
+    }
+
+.rightBox .btnBox .btn,
+.rightBox .btnBox .btn {
+    width: 100%;
+    margin: 0;
+}
+
+.rightBox .addBox .btn {
+    margin-top: 5px;
+}
+
+.btn {
+    margin: 5px;
+}
+
+/*search*/
+.search {
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #E6E6E6;
+    padding: 20px;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: white;
+}
+
+    .search input[type="search"] {
+        width: 100%;
+        border-radius: 10px 0 0 10px;
+        border-right: 0;
+    }
+
+    .search input[type="button"] {
+        border: 1px solid #426FC5;
+        margin: 0;
+        border-radius: 0 10px 10px 0;
+        font-size: 1.2rem;
+        padding: 10px 15px;
+        box-shadow: none;
+    }
+
+.resultNull {
+    color: #426FC5;
+    padding: 20px 0;
+    font-size: 1rem;
+}
+
+    .resultNull:before {
+        left: -50px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+.manageNull:before {
+    content: 'build';
+}
+
+.searchNull:before {
+    content: 'search';
+}

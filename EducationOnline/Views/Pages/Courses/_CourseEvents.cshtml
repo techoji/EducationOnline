@@ -1,0 +1,46 @@
+﻿@{
+    bool IsUpdateEvents = ViewBag.UpdateEvents;
+    List<dynamic> events = Session["events"] as List<dynamic> ?? null;
+        if (events == null || IsUpdateEvents) {
+        events = new List<dynamic>();
+        using (DbManager db = new DbManager()) {
+            User user = db.GetUserByEmail(User.Identity.Name);
+            foreach (dynamic item in db.GetTestsByUserId(User.Identity.Name).Where(x => x.ClosingIn >= DateTime.Now)) {
+                if (!db.IsTestChecked(item.TestId, user.UserId)) {
+                    events.Add(new TestVM((Test)item));
+                }
+            }
+            foreach (dynamic item in db.GetFilesByUserEmail(User.Identity.Name).Where(x => x.ClosingIn >= DateTime.Now)) {
+                if (!db.IsFileChecked(item.FileId, user.UserId)) {
+                    events.Add(new FileVM((DistanceLearning.Models.File)item));
+                }
+            }
+        }
+        events = events.OrderBy(e => e.ClosingIn).ToList();
+        Session["events"] = events;
+    }
+}
+
+@if (events.Count > 0) {
+    using (DbManager db = new DbManager()) {
+        foreach (dynamic item in events) {
+            CourseVM course = item.GetCourse();
+            UserCourse userCourse = db.GetUserCourse(User.Identity.Name, course.Id);
+            String shortName = course.ShortName;
+            String courseName = String.IsNullOrWhiteSpace(shortName) ? course.Name : shortName;
+            <li>
+                <a href="/pages/course/@course.Id">
+                    <p class="lineName">@(item.Name)</p>
+                    <span style="color: hsl(@userCourse.ColorHue, 53%, 52%);" class="lineCourse">@courseName</span>
+                    <span class="lineDate">@item.ClosingIn.ToString("dd.MM")</span>
+                </a>
+            </li>
+        }
+    }
+}
+@*else {
+    <li class="notActive allEventsDone">
+        <p>Всё выполнено</p>
+        <span class="lineDate icon eventsDone"></span>
+    </li>
+}*@

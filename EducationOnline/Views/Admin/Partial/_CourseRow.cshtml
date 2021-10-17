@@ -1,0 +1,30 @@
+﻿@model Course
+
+@{
+    List<Group> groups = ViewBag.Groups;
+    IEnumerable<CourseGroupVM> courseGroups = ViewBag.CourseGroups;
+}
+
+<tr id="courseRow@(Model.CourseId)">
+    <td>
+        @Model.Name
+    </td>
+    <td>
+        @Model.ShortName
+    </td>
+    <td>
+        @{
+            IEnumerable<CourseGroupVM> courseGroup = courseGroups.Where(u => u.CourseId == Model.CourseId);
+            if (courseGroups.Count() > 0) {
+                @(String.Join(", ", groups.Where(g => courseGroup.Select(x => x.GroupId).Contains(g.GroupId)).Select(z => z.Name)))
+            }
+        }
+    </td>
+    <td>
+        <div class="btnBox">
+            @Ajax.ActionLink("Редактировать название", "EditCourse", new { Model.CourseId, Model.Name, Model.ShortName }, new AjaxOptions { UpdateTargetId = $"courseRow{Model.CourseId}", HttpMethod = "Post", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+            @Html.ActionLink("Редактировать группы", "CourseGroups", new { Model.CourseId }, new { @class = "btn" })
+            @Ajax.ActionLink("Удалить курс", "DeleteCourse", new { Model.CourseId }, new AjaxOptions { UpdateTargetId = $"courseRow{Model.CourseId}", HttpMethod = "Post" }, new { @class = "btn red", InsertionMode = InsertionMode.ReplaceWith })
+        </div>
+    </td>
+</tr>

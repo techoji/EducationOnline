@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d557be7dd10b40c086fa777b58785807" Name="Diagram1" ZoomLevel="47" ShowGrid="false">
+        <EntityTypeShape EntityType="DistanceLearningModel.CourseGroups" Width="1.5" PointX="14.125" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Courses" Width="1.5" PointX="12" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.CourseTopics" Width="1.5" PointX="10.125" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.FileTypes" Width="1.5" PointX="7.875" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Groups" Width="1.5" PointX="16.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Roles" Width="1.5" PointX="20.25" PointY="18.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Teachers" Width="1.5" PointX="18.125" PointY="18.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.TestAnswers" Width="1.5" PointX="3.25" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.TestCorrectAnswers" Width="1.5" PointX="5.625" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.TestQuestions" Width="1.5" PointX="5.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Tests" Width="1.5" PointX="8.125" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.TopicFiles" Width="1.5" PointX="8.125" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.UserCourses" Width="1.5" PointX="14.5" PointY="15.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.UserGroups" Width="1.5" PointX="18.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.UserRoles" Width="1.5" PointX="20.375" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.Users" Width="1.5" PointX="17.5" PointY="15" IsExpanded="true" />
+        <EntityTypeShape EntityType="DistanceLearningModel.UserTopicFileDones" Width="1.5" PointX="10.75" PointY="14.375" IsExpanded="true" />
+        <AssociationConnector Association="DistanceLearningModel.FK__CourseGro__Cours__17F790F9" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__CourseGro__Group__18EBB532" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__CourseTop__Cours__0A9D95DB" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TopicFile__Cours__756D6ECB" ManuallyRouted="false" ></AssociationConnector>
+        <AssociationConnector Association="DistanceLearningModel.FK__UserCours__Cours__3D2915A8" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__UserTopic__Cours__345EC57D" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TopicFile__Cours__76619304" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TopicFile__FileT__7755B73D" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__UserGroup__Group__07C12930" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="DistanceLearningModel.FK__UserRoles__RoleI__440B1D61" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__Teachers__UserId__46E78A0C" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestAnswe__Quest__58D1301D" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestAnswe__TestI__09746778" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestCorre__Answe__65370702" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestCorre__Quest__6442E2C9" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestCorre__TestI__0A688BB1" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__TestQuest__TestI__0880433F" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__Tests__TopicFile__0C50D423" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__UserTopic__Topic__3552E9B6" ManuallyRouted="false" ></AssociationConnector>
+        <AssociationConnector Association="DistanceLearningModel.FK__UserCours__UserI__3C34F16F" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__UserGroup__UserI__06CD04F7" ManuallyRouted="false" />
+        <AssociationConnector Association="DistanceLearningModel.FK__UserRoles__UserI__4316F928" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="DistanceLearningModel.FK__UserTopic__UserI__336AA144" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

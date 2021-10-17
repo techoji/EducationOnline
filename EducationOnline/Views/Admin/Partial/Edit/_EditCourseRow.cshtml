@@ -1,0 +1,20 @@
+﻿@model Course
+
+<tr id="courseRow@(Model.CourseId)">
+    <td>
+        <input form="formCourse@(Model.CourseId)" value="@(Model.Name)" type="text" placeholder="@Model.Name" name="Name" />
+    </td>
+    <td>
+        <input form="formCourse@(Model.CourseId)" value="@(Model.ShortName)" type="text" placeholder="@Model.ShortName" name="ShortName" />
+    </td>
+    <td></td>
+    <td>
+        <div class="btnBox">
+            @using (Ajax.BeginForm("SaveCourse", null, new AjaxOptions { UpdateTargetId = $"courseRow{Model.CourseId}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { id = $"formCourse{Model.CourseId}" })) { }
+            <input form="formCourse@(Model.CourseId)" value="@Model.CourseId" name="CourseId" hidden />
+            <input form="formCourse@(Model.CourseId)" type="submit" value="Сохранить" class="btn green" />
+            @Ajax.ActionLink("Отмена", "CancelCourse", new { Model.CourseId, Model.Name, Model.ShortName }, new AjaxOptions { UpdateTargetId = $"courseRow{Model.CourseId}", HttpMethod = "POST", InsertionMode = InsertionMode.ReplaceWith }, new { @class = "btn" })
+        </div>
+    </td>
+</tr>
+

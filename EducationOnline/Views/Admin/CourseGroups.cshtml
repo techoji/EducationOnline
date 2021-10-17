@@ -1,0 +1,56 @@
+﻿@model IEnumerable<CourseGroupVM>
+@Styles.Render("~/admin")
+@Styles.Render("~/table")
+@Styles.Render("~/gridAdmin")
+@{
+    CourseVM course = ViewBag.Course as CourseVM;
+    ViewBag.Title = $"Администратирование | Группы курса ({course.Name})";
+    List<Group> groups = ViewBag.Groups;
+    ViewBag.Course = course;
+}
+
+<p class="title">
+    <a class="basic" href="/">Главная</a>
+    >
+    <a class="basic" href="/admin/management/courses">Администрирование (Пользователи)</a>
+    >
+    <a class="active-nav basic" href="/admin/management/coursecourses/@course.Id">Группы курса (@course.Name)</a>
+</p>
+<div class="manageContainer" id="ManageContainer">
+    @if (Model.Count() == 0) {
+        <p class="resultNull manageNull icon">У курса нет групп</p>
+    }
+    else {
+        @Html.Partial("Partial/Tables/_TableCourseGroups", Model)
+    }
+</div>
+
+@section rightBox{
+    <div class="card">
+        <div class="card mini">
+            <div class="addContainer">
+                <div class="btnBox">
+                    @Html.ActionLink("Добавить группу для курса", "Create", null, new { @class = "btn", id = "Create" })
+                </div>
+                <div class="addBox" id="Add">
+                    <p>Добавление группы для курса</p>
+                    <select form="formAddCourseGroup" name="GroupId">
+                        @foreach (Group group in groups) {
+                            <option value="@group.GroupId">@group.Name</option>
+                        }
+                    </select>
+                    <div class="btnBox">
+                        @using (Ajax.BeginForm("AddCourseGroup", null, new AjaxOptions { UpdateTargetId = "ManageContainer", HttpMethod = "POST" }, new { id = "formAddCourseGroup" })) { }
+                        <input type="text" form="formAddCourseGroup" value="@course.Id" name="CourseId" hidden />
+                        <input type="submit" form="formAddCourseGroup" value="Добавить группу" class="btn green" />
+                        @Html.ActionLink("Отмена", "Cancel", null, new { @class = "btn", id = "CancelCreate" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts{
+    @Scripts.Render("~/js/Admin/Table")
+}
