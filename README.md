@@ -1,1 +1,1 @@
-Laboratory for education | Web site
+Education Laboratory | Web site
